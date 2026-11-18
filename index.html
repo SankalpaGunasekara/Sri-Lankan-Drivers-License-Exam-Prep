@@ -67,6 +67,8 @@ select{font:inherit;font-size:15px;padding:6px 8px;border-radius:10px;border:1px
 <div class="wrap">
 <h1>රියදුරු බලපත්‍ර ලිඛිත විභාගය (සැහැල්ලු වාහන)</h1>
 <p class="sub">ප්‍රශ්න 40 (සියල්ල නිල DMT ප්‍රශ්න පොතෙන්) · සමත් වීමට 30/40 · ඉලක්කය 40/40 · සෑම වාරයකම නව ප්‍රශ්න පත්‍රයක්</p>
+<div style="display:flex;gap:6px;justify-content:flex-end;margin:-4px 0 8px"><button id="langSi" onclick="setLang('si')">සිංහල</button><button id="langEn" onclick="setLang('en')">English</button></div>
+<div id="enWarn" class="res" style="display:none;border-color:#e0a800;font-size:14px">⚠️ English is an <b>unofficial translation</b> made by this site. The official DMT question book is in Sinhala (and Tamil), and no official English version could be found, so the real English exam paper may use different wording. If something looks wrong, check the Sinhala version or report it.</div>
 <div class="tabs" id="tabs">
   <button data-t="exam" class="on">📝 ප්‍රශ්න පත්‍රය</button>
   <button data-t="wrong">❌ වැරදුණු ප්‍රශ්න (0)</button>
@@ -82,7 +84,7 @@ select{font:inherit;font-size:15px;padding:6px 8px;border-radius:10px;border:1px
     <span class="pill" id="prog">0/40</span>
     <span class="pill" id="timer">60:00</span>
     <button class="primary" id="submit">ඉදිරිපත් කරන්න</button>
-    <button id="reset">නව පත්‍රයක්</button>
+    <button id="reset">නව ප්‍රශ්න පත්‍රයක්</button>
   </div>
   <div id="result"></div>
   <div id="paper"></div>
@@ -91,11 +93,11 @@ select{font:inherit;font-size:15px;padding:6px 8px;border-radius:10px;border:1px
 <section id="t-wrong" hidden>
   <div class="bar">
     <span class="pill" id="wrongProg">0</span>
-    <button id="wrongRefresh">වැඩිපුරම වැරදුණු ඒවා මුලට</button>
-    <button id="wrongShuffle">අලුතින් අනුපිළිවෙල</button>
+    <button id="wrongRefresh">වැඩිපුරම වැරදුණු ප්‍රශ්න මුලට</button>
+    <button id="wrongShuffle">අලුත් අනුපිළිවෙළකට</button>
     <button id="wrongClear">සියල්ල මකන්න</button>
   </div>
-  <p class="gdesc" style="margin-top:8px">ඕනෑම ටැබ් එකක වැරදුණු ප්‍රශ්න මෙහි ස්වයංක්‍රීයව එකතු වේ – එකම ප්‍රශ්නය කිහිප වරක් නොපෙන්වයි. මෙහිදී නිවැරදිව පිළිතුරු දුන් විට එය ලැයිස්තුවෙන් ඉවත් වේ. (මෙම උපාංගයේ බ්‍රවුසරයේ සුරැකේ.)</p>
+  <p class="gdesc" style="margin-top:8px">ඕනෑම අංශයකින් වැරදුණු ප්‍රශ්න මෙහි ස්වයංක්‍රීයව එකතු වේ – එකම ප්‍රශ්නය කිහිප වරක් නොපෙන්වයි. මෙහිදී නිවැරදිව පිළිතුරු දුන් විට එය ලැයිස්තුවෙන් ඉවත් වේ. (ඔබේ උපාංගයේ බ්‍රවුසරයේ සුරැකේ.)</p>
   <div id="wrongList"></div>
 </section>
 
@@ -111,7 +113,7 @@ select{font:inherit;font-size:15px;padding:6px 8px;border-radius:10px;border:1px
   <div class="bar">
     <select id="bankSec"></select>
     <span class="pill" id="bankProg"></span>
-    <button id="bankShuffle">අලුතින් අනුපිළිවෙල</button>
+    <button id="bankShuffle">අලුත් අනුපිළිවෙළකට</button>
     <button id="bankReset">ප්‍රගතිය මකන්න</button>
   </div>
   <div id="bank"></div>
@@ -120,88 +122,103 @@ select{font:inherit;font-size:15px;padding:6px 8px;border-radius:10px;border:1px
 <section id="t-notes" hidden>
 <h2>ප්‍රශ්න පත්‍රයේ සැකැස්ම</h2>
 <table>
-<tr><td>මුළු ප්‍රශ්න</td><td>45 – සංඥා 20 · මාර්ග සලකුණු 10 · මාර්ග නීති 10 · තාක්ෂණික දැනුම 5</td></tr>
-<tr><td>සැහැල්ලු වාහන</td><td>ප්‍රශ්න 40ට පිළිතුරු · අවම 30ක් නිවැරදි විය යුතුය</td></tr>
-<tr><td>බර වාහන</td><td>ප්‍රශ්න 45ම · අවම 35ක් නිවැරදි විය යුතුය</td></tr>
+<tr><td>මුළු ප්‍රශ්න සංඛ්‍යාව</td><td>45 – සංඥා 20 · මාර්ග සලකුණු 10 · මාර්ග නීති 10 · තාක්ෂණික දැනුම 5</td></tr>
+<tr><td>සැහැල්ලු වාහන</td><td>ප්‍රශ්න 40ට පිළිතුරු දෙන්න · අවම වශයෙන් 30ක් නිවැරදි විය යුතුය</td></tr>
+<tr><td>බර වාහන</td><td>ප්‍රශ්න 45ටම පිළිතුරු දෙන්න · අවම වශයෙන් 35ක් නිවැරදි විය යුතුය</td></tr>
 </table>
 <h2>සංඥා හඳුනා ගැනීම</h2>
 <table>
-<tr><td>අනතුරු ඇඟවීමේ සංඥා</td><td>කහ පැහැති දියමන්ති (කොණ මත සිටුවූ හතරැස්) හැඩය · කළු දාරය · කළු සංකේතය. (රතු දාර සහිත සුදු ත්‍රිකෝණ නොවේ!)</td></tr>
+<tr><td>අනතුරු හැඟවීමේ සංඥා</td><td>කහ පැහැති දියමන්ති (කොණ මත සිටුවූ හතරැස්) හැඩය · කළු දාරය · කළු සංකේතය. (රතු දාර සහිත සුදු ත්‍රිකෝණ නොවේ!)</td></tr>
 <tr><td>තහනම් සංඥා</td><td>සුදු රවුම · රතු වළල්ල · කළු සංකේතය · බොහෝ විට රතු ඇල තීරුවක්</td></tr>
-<tr><td>අනිවාර්ය සංඥා</td><td>සුදු රවුම · රතු වළල්ල · කළු ඊතලය · රතු ඇල තීරුවක් <b>නැත</b> (ලංකාවේ නිල් රවුම් නොවේ)</td></tr>
-<tr><td>නැවැත්වීම් සංඥා</td><td>නිල් රවුම · රතු වළල්ල: තීරුවක් = නැවැත්වීම තහනම් · X = නැවැත්වීම සහ නතර කිරීම තහනම් · I = ඔත්තේ දින · II = ඉරට්ටේ දින</td></tr>
-<tr><td>සීමා කිරීමේ සංඥා</td><td>රතු වළල්ල තුළ අංක – වේගය, පළල, උස, බර</td></tr>
-<tr><td>නවතින්න (STOP)</td><td>රතු අෂ්ටාස්‍රය – සෑම විටම සම්පූර්ණයෙන් නවතින්න</td></tr>
-<tr><td>මග දෙන්න</td><td>යටිකුරු ත්‍රිකෝණය – මාර්ගය පැහැදිලි නම් නොනවතා යා හැක</td></tr>
+<tr><td>අනිවාර්ය සංඥා</td><td>සුදු රවුම · රතු වළල්ල · කළු ඊතලය · රතු ඇල තීරුවක් <b>නැත</b> (ශ්‍රී ලංකාවේ නිල් රවුම් නොවේ)</td></tr>
+<tr><td>නැවැත්වීම් සංඥා</td><td>නිල් රවුම · රතු වළල්ල: තනි තීරුවක් = වාහන නැවැත්වීම තහනම් · X = නැවැත්වීම සහ නතර කිරීම තහනම් · I = ඔත්තේ දින · II = ඉරට්ටේ දින</td></tr>
+<tr><td>සීමාකාරී සංඥා</td><td>රතු වළල්ල තුළ අංක – වේගය, පළල, උස, බර</td></tr>
+<tr><td>නවතිනු (STOP)</td><td>රතු අෂ්ටාස්‍රය – සෑම විටම සම්පූර්ණයෙන් නවතින්න</td></tr>
+<tr><td>මාර්ගය ඉඩදෙනු</td><td>යටිකුරු ත්‍රිකෝණය – මාර්ගය පැහැදිලි නම් නොනවතා යා හැක</td></tr>
 <tr><td>තොරතුරු සංඥා</td><td>සෘජුකෝණාස්‍ර · කොළ = ජාතික මහාමාර්ග · නිල් = අධිවේගී මාර්ග / පහසුකම්</td></tr>
 </table>
 <h2>වේග සීමා (කි.මී./පැය)</h2>
 <table>
-<tr><td>කාර්, ද්විත්ව කාර්ය, මෝටර් සයිකල්</td><td>නාගරික 50 · නාගරික නොවන 70 · අධිවේගී 100</td></tr>
-<tr><td>බස්, ලොරි</td><td>නාගරික 50 · නාගරික නොවන 60 · අධිවේගී 100</td></tr>
-<tr><td>ත්‍රිරෝද රථ, ට්‍රැක්ටර්</td><td>සෑම තැනම 40 · අධිවේගී මාර්ගයේ තහනම්</td></tr>
-<tr><td>අධිවේගී මාර්ගයේ තහනම්</td><td>පදිකයින්, ත්‍රිරෝද රථ, මෝටර් සයිකල්, ට්‍රැක්ටර්, බයිසිකල් · ඇතුළු/පිටවීමේ මාර්ග 60</td></tr>
+<tr><td>මෝටර් රථ, ද්විත්ව කාර්ය වාහන, මෝටර් සයිකල්</td><td>නාගරික 50 · නාගරික නොවන 70 · අධිවේගී 100</td></tr>
+<tr><td>බස් රථ, ලොරි රථ</td><td>නාගරික 50 · නාගරික නොවන 60 · අධිවේගී 100</td></tr>
+<tr><td>ත්‍රිරෝද රථ, ට්‍රැක්ටර්</td><td>සෑම ප්‍රදේශයකම 40 · අධිවේගී මාර්ගයේ තහනම්</td></tr>
+<tr><td>අධිවේගී මාර්ගයේ තහනම්</td><td>පදිකයින්, ත්‍රිරෝද රථ, මෝටර් සයිකල්, ට්‍රැක්ටර්, පාපැදි · ඇතුල්වීමේ/පිටවීමේ මාර්ග 60</td></tr>
 </table>
 <h2>මාර්ග සලකුණු</h2>
 <table>
-<tr><td>කැඩුණු මැද රේඛාව</td><td>ආරක්ෂිත නම් ඉස්සර කිරීමට / දකුණට හැරීමට තරණය කළ හැක</td></tr>
-<tr><td>තනි අඛණ්ඩ රේඛාව</td><td>දකුණට හැරීමට හෝ හදිසි අනතුරක් වැළැක්වීමට පමණි · ඉස්සර කිරීම තහනම්</td></tr>
-<tr><td>ද්විත්ව අඛණ්ඩ රේඛා</td><td>කිසිසේත් තරණය නොකරන්න (දකුණට හැරීමටත් නොවේ)</td></tr>
-<tr><td>මිශ්‍ර රේඛා</td><td>ඔබේ පැත්තේ රේඛාව තීරණය කරයි – කැඩුණු නම් ඉස්සර කළ හැක</td></tr>
-<tr><td>අනතුරු ඇඟවීමේ රේඛාව</td><td>දිගු කැබලි – ඉදිරියේ අඛණ්ඩ රේඛාවක් (අවම 50 m කට පෙර)</td></tr>
-<tr><td>කහ රේඛා (දාරයේ)</td><td>තනි = නැවැත්වීම තහනම් · ද්විත්ව = නැවැත්වීම, පැටවීම/බෑම, නතර කිරීම තහනම්</td></tr>
-<tr><td>කහ කොටු හන්දිය</td><td>පිටවීම පැහැදිලි නම් පමණක් ඇතුළු වන්න (දකුණට හැරීම හැර)</td></tr>
+<tr><td>කැඩුණු මැද රේඛාව</td><td>ආරක්ෂිත නම් ඉස්සර කිරීමට / දකුණට හැරවීමට හරහා යා හැක</td></tr>
+<tr><td>තනි අඛණ්ඩ රේඛාව</td><td>දකුණට හැරවීමට හෝ හදිසි අනතුරක් වළක්වා ගැනීමට පමණි · ඉස්සර කිරීම තහනම්</td></tr>
+<tr><td>ද්විත්ව අඛණ්ඩ රේඛා</td><td>කිසි විටෙකත් හරහා නොයන්න (දකුණට හැරවීමට පවා නොවේ)</td></tr>
+<tr><td>මිශ්‍ර රේඛා</td><td>ඔබේ පස ඇති රේඛාව අනුව තීරණය වේ – කැඩුණු රේඛාවක් නම් ඉස්සර කළ හැක</td></tr>
+<tr><td>අනතුරු හැඟවීමේ රේඛාව</td><td>දිගු කැබලි – ඉදිරියේ අඛණ්ඩ රේඛාවක් (අවම 50 m කට පෙර)</td></tr>
+<tr><td>කහ රේඛා (දාරයේ)</td><td>තනි රේඛාව = වාහන නැවැත්වීම තහනම් · ද්විත්ව රේඛා = නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම්</td></tr>
+<tr><td>කහ මංසන්ධි කොටුව</td><td>පිටවීම පැහැදිලි නම් පමණක් ඇතුල් වන්න (දකුණට හැරවීම හැර)</td></tr>
 </table>
-<h2>නැවැත්වීම තහනම් දුර</h2>
+<h2>වාහන නැවැත්වීම තහනම් දුර ප්‍රමාණ</h2>
 <table>
-<tr><td>ප්‍රධාන මාර්ග හන්දිය</td><td>25 m</td></tr>
-<tr><td>සුළු මාර්ග හන්දිය</td><td>10 m</td></tr>
+<tr><td>ප්‍රධාන මාර්ග මංසන්ධිය</td><td>25 m</td></tr>
+<tr><td>සුළු මාර්ග මංසන්ධිය</td><td>10 m</td></tr>
 <tr><td>බස් නැවතුම / පදික මාරුව</td><td>පෙර 30 m · පසු 15 m</td></tr>
-<tr><td>සංඥා ලාම්පු සහිත හන්දිය</td><td>පෙර 50 m</td></tr>
+<tr><td>රථ වාහන ආලෝක සංඥා සහිත මංසන්ධිය</td><td>පෙර 50 m</td></tr>
 </table>
-<h2>නීති සහ සංඥා ලාම්පු</h2>
+<h2>මාර්ග නීති සහ රථ වාහන ආලෝක සංඥා</h2>
 <table>
-<tr><td>ලාම්පු අනුපිළිවෙල</td><td>රතු → රතු+කහ → කොළ → කහ → රතු</td></tr>
-<tr><td>පාලන ප්‍රමුඛතාව</td><td>පොලිස් නිලධාරී &gt; සංඥා ලාම්පු &gt; සංඥා/සලකුණු &gt; දකුණෙන් එන අයට මග දීම</td></tr>
-<tr><td>පාලනයක් නැති හන්දිය</td><td>දකුණු පසින් එන වාහනයට මග දෙන්න</td></tr>
-<tr><td>වටරවුම</td><td>දක්ෂිණාවර්තව (දූපත දකුණු පසින්) · දකුණෙන් එන අයට මග දෙන්න</td></tr>
-<tr><td>කඳු පාර (සංඥා නැති)</td><td>නගින වාහනයට ප්‍රමුඛතාව</td></tr>
-<tr><td>අත් සංඥා (දකුණු අත)</td><td>කෙළින් දිගු කිරීම = දකුණට · ඉහළ පහළ සෙලවීම = වේගය අඩු කිරීම/නැවැත්වීම · වාමාවර්තව කරකැවීම = වමට</td></tr>
+<tr><td>ආලෝක සංඥා අනුපිළිවෙළ</td><td>රතු → රතු+කහ → කොළ → කහ → රතු</td></tr>
+<tr><td>පාලන ප්‍රමුඛතාව</td><td>පොලිස් නිලධාරී &gt; ආලෝක සංඥා &gt; මාර්ග සංඥා/සලකුණු &gt; දකුණු පසින් එන වාහනවලට මාර්ගය ඉඩ දීම</td></tr>
+<tr><td>පාලනයක් නොමැති මංසන්ධිය</td><td>දකුණු පසින් පැමිණෙන වාහනයට මාර්ගය ඉඩ දෙන්න</td></tr>
+<tr><td>වටරවුම</td><td>දක්ෂිණාවර්තව (මැද දූපත දකුණු පසින්) · දකුණු පසින් පැමිණෙන වාහනවලට මාර්ගය ඉඩ දෙන්න</td></tr>
+<tr><td>කඳු මාර්ග (සංඥා නොමැති)</td><td>කන්ද නගින වාහනයට ප්‍රමුඛතාව</td></tr>
+<tr><td>අත් සංඥා (දකුණු අත)</td><td>කෙළින් පිටතට දිගු කිරීම = දකුණට · ඉහළ පහළ සෙලවීම = වේගය අඩු කිරීම/නැවැත්වීම · වාමාවර්තව කරකැවීම = වමට</td></tr>
 <tr><td>රැගෙන යා යුතු ලේඛන</td><td>රියදුරු බලපත්‍රය, රක්ෂණ සහතිකය (අවම තෙවන පාර්ශ්ව), ආදායම් බලපත්‍රය (ඉදිරිපස වම් පස), දුම් පරීක්ෂණ සහතිකය</td></tr>
-<tr><td>ජංගම දුරකථනය</td><td>රිය පදවන විට කිසිසේත් භාවිතා නොකළ යුතුය</td></tr>
-<tr><td>අනතුරක් වූ විට</td><td>නවතින්න · තුවාලකරු රෝහලට · ළඟම පොලිසියට වහාම දැනුම් දෙන්න</td></tr>
-<tr><td>හදිසි අංක</td><td>පොලිසිය 119 · ගිලන් රථ 1990 · අධිවේගී මාර්ග 1969</td></tr>
+<tr><td>ජංගම දුරකථනය</td><td>රිය පදවන විට කිසි විටෙකත් භාවිත නොකළ යුතුය</td></tr>
+<tr><td>අනතුරක් සිදු වූ විට</td><td>නවතින්න · තුවාලකරු රෝහලට ගෙන යන්න · ළඟම පොලිසියට වහාම දැනුම් දෙන්න</td></tr>
+<tr><td>හදිසි දුරකථන අංක</td><td>පොලිසිය 119 · ගිලන් රථ 1990 · අධිවේගී මාර්ග 1969</td></tr>
 </table>
 <h2>මීටර් පුවරුවේ සංකේත (DMT පොතෙන්)</h2>
 <p class="gdesc">වාහනයක මීටර් පුවරුව මත සහ ඉදිරි පුවරුව මත ඇති සලකුණු.</p>
 <img src="book/dash1.jpg" style="width:100%;border-radius:10px;margin:6px 0" alt="dashboard symbols 1">
 <img src="book/dash2.jpg" style="width:100%;border-radius:10px;margin:6px 0" alt="dashboard symbols 2">
 <img src="book/dash3.jpg" style="width:100%;border-radius:10px;margin:6px 0" alt="dashboard symbols 3">
-<h2>තාක්ෂණික</h2>
+<h2>තාක්ෂණික දැනුම</h2>
 <table>
 <tr><td>රතු අනතුරු ලාම්පු</td><td>තෙල් පීඩනය, තිරිංග, එන්ජින් උෂ්ණත්වය, බැටරි – වහාම නවතින්න</td></tr>
-<tr><td>කහ ලාම්පු</td><td>Check engine, ABS, ටයර් පීඩනය, ඉන්ධන අඩු – ඉක්මනින් පරීක්ෂා කරන්න</td></tr>
-<tr><td>ටයර් ගෙවීම</td><td>මැද = වාතය වැඩි · දෙදාර = වාතය අඩු · එක් දාරයක් = රෝද පෙළගැස්ම (alignment)</td></tr>
-<tr><td>බෑවුමකින් පහළට</td><td>අඩු ගියරයක් – එන්ජින් තිරිංග · නියුට්‍රල් එකේ යන්න එපා</td></tr>
+<tr><td>කහ අනතුරු ලාම්පු</td><td>Check engine, ABS, ටයර් පීඩනය, ඉන්ධන අඩු වීම – ඉක්මනින් පරීක්ෂා කරවා ගන්න</td></tr>
+<tr><td>ටයර් ගෙවී යාම</td><td>මැද ගෙවී යාම = වාතය වැඩි වීම · දෙදාර ගෙවී යාම = වාතය අඩු වීම · එක් දාරයක් ගෙවී යාම = රෝද පෙළගැස්ම (alignment)</td></tr>
+<tr><td>බෑවුමකින් පහළට</td><td>අඩු ගියරයක් භාවිත කරන්න – එන්ජින් තිරිංග · නියුට්‍රල් ගියරයෙන් ධාවනය නොකරන්න</td></tr>
 </table>
 </section>
 
 <section id="t-fb" hidden>
 <h2>💬 යෝජනා පෙට්ටිය සහ නිවැරදි කිරීම්</h2>
-<p>ප්‍රශ්නයක පිළිතුරක් වැරදියි කියා සිතනවාද? සිංහල වචන අපැහැදිලිද? නැත්නම් අලුත් අදහසක් තිබේද? අපට දන්වන්න – සෑම වාර්තාවක්ම පරීක්ෂා කර අඩවිය යාවත්කාලීන කරනු ලැබේ.</p>
+<p>ප්‍රශ්නයක පිළිතුරක් වැරදි යැයි සිතන්නේද? සිංහල වචන අපැහැදිලිද? නැතහොත් නව අදහසක් තිබේද? අප වෙත දන්වන්න – සෑම වාර්තාවක්ම පරීක්ෂා කර වෙබ් අඩවිය යාවත්කාලීන කරනු ලැබේ.</p>
 <div id="fbBox"></div>
 <h2>නිවැරදි කිරීමක් යවන විට</h2>
 <table>
-<tr><td>ප්‍රශ්නය</td><td>«DMT පොත – ප්‍රශ්න අංක ..» ලෙස අංකය සඳහන් කරන්න (ප්‍රශ්නයේ «⚑ වාර්තා කරන්න» බොත්තම භාවිතා කළ විට මෙය ස්වයංක්‍රීයව පිරේ).</td></tr>
+<tr><td>ප්‍රශ්නය</td><td>«DMT පොත – ප්‍රශ්න අංක ..» ලෙස අංකය සඳහන් කරන්න (ප්‍රශ්නයේ «⚑ වාර්තා කරන්න» බොත්තම භාවිත කළ විට මෙය ස්වයංක්‍රීයව පිරවේ).</td></tr>
 <tr><td>නිවැරදි පිළිතුර</td><td>ඔබ නිවැරදි යැයි සිතන පිළිතුර සහ හේතුව.</td></tr>
 <tr><td>මූලාශ්‍රය</td><td>හැකි නම් DMT අත්පොත, ගැසට් පත්‍රය හෝ වෙනත් සාක්ෂියක්.</td></tr>
 </table>
 </section>
 
-<p class="foot">ප්‍රශ්න: මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ලිඛිත විභාග ප්‍රශ්න. සංඥා රූප: Wikimedia Commons සහ DMT අධ්‍යයන ද්‍රව්‍ය. මෙය නිල DMT අඩවියක් නොවේ – අධ්‍යයනය සඳහා පමණි.<br>මෙම ප්‍රශ්න මෝටර් වාහන ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ආදර්ශ ප්‍රශ්න පත්‍රයේ මාතෘකා සහ 2015 අංක 02 දරන සංඥා රෙගුලාසි ඇසුරින් සකස් කර ඇත. සංඥා රූප: Wikimedia Commons (ශ්‍රී ලංකා 2015 සංඥා රෙගුලාසි අනුව). ප්‍රමුඛතා සංඥා කිහිපයක්, දුම්රිය හරස් ලකුණු, ලාම්පු සහ මාර්ග සලකුණු සරල කළ රූප වේ. නීති වෙනස් විය හැක; විභාගයට පෙර නවතම DMT අත්පොත පරීක්ෂා කරන්න.</p>
+<p class="foot">ප්‍රශ්න: මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ලිඛිත විභාග ප්‍රශ්න. සංඥා රූප: Wikimedia Commons සහ DMT අධ්‍යයන ද්‍රව්‍ය. මෙය නිල DMT වෙබ් අඩවියක් නොවේ – අධ්‍යයන කටයුතු සඳහා පමණි.<br>මෙම ප්‍රශ්න මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ආදර්ශ ප්‍රශ්න පත්‍රයේ මාතෘකා සහ 2015 අංක 02 දරන මාර්ග සංඥා රෙගුලාසි ඇසුරින් සකස් කර ඇත. සංඥා රූප: Wikimedia Commons (ශ්‍රී ලංකා 2015 සංඥා රෙගුලාසි අනුව). ප්‍රමුඛතා සංඥා කිහිපයක්, දුම්රිය හරස් මාර්ග ලකුණු, ආලෝක සංඥා සහ මාර්ග සලකුණු සරල කළ රූප වේ. නීති වෙනස් විය හැකි බැවින් විභාගයට පෙර නවතම DMT අත්පොත පරීක්ෂා කරන්න.</p>
 </div>
 
 <script src="config.js"></script>
+<script>
+// ===== Language (si / en) =====
+let LANG='si';try{LANG=localStorage.getItem('dmt_lang')||'si';}catch(e){}
+const EN=LANG==='en';
+const I18N_D={"මාර්ගය ඉඩදෙනු":"Give way","අනතුරු හැඟවීමේ සංඥා": "Warning signs", "තහනම් සංඥා": "Prohibitory signs", "නැවැත්වීම් සංඥා": "Parking signs", "සීමාකාරී සංඥා": "Restrictive signs", "අනිවාර්ය සංඥා": "Mandatory signs", "ප්‍රමුඛතා සංඥා": "Priority signs", "තොරතුරු සංඥා": "Information signs", "රථ වාහන ආලෝක සංඥා": "Traffic light signals", "මාර්ග සලකුණු": "Road markings", "පදික මාරුව": "Pedestrian crossing","රියදුරු බලපත්‍ර ලිඛිත විභාගය – සියලු සංඥා සහ ප්‍රශ්න": "Driving Licence Written Exam – All Signs and Questions", "රියදුරු බලපත්‍ර ලිඛිත විභාගය (සැහැල්ලු වාහන)": "Driving Licence Written Exam (Light Vehicles)", "ප්‍රශ්න 40 (සියල්ල නිල DMT ප්‍රශ්න පොතෙන්) · සමත් වීමට 30/40 · ඉලක්කය 40/40 · සෑම වාරයකම නව ප්‍රශ්න පත්‍රයක්": "40 questions (all from the official DMT question book) · Pass mark 30/40 · Target 40/40 · New paper every time", "📝 ප්‍රශ්න පත්‍රය": "📝 Exam paper", "❌ වැරදුණු ප්‍රශ්න (0)": "❌ Wrong answers (0)", "🚸 සියලු සංඥා": "🚸 All signs", "📖 DMT පොත + සියලු ප්‍රශ්න": "📖 DMT book + all questions", "📌 කෙටි සටහන්": "📌 Quick notes", "💬 යෝජනා / නිවැරදි කිරීම්": "💬 Suggestions / corrections", "විභාග ක්‍රමය": "Exam mode", "පුහුණු ක්‍රමය": "Practice mode", "ඉදිරිපත් කරන්න": "Submit", "නව ප්‍රශ්න පත්‍රයක්": "New paper", "වැඩිපුරම වැරදුණු ප්‍රශ්න මුලට": "Most-missed first", "අලුත් අනුපිළිවෙළකට": "Shuffle", "සියල්ල මකන්න": "Clear all", "ඕනෑම අංශයකින් වැරදුණු ප්‍රශ්න මෙහි ස්වයංක්‍රීයව එකතු වේ – එකම ප්‍රශ්නය කිහිප වරක් නොපෙන්වයි. මෙහිදී නිවැරදිව පිළිතුරු දුන් විට එය ලැයිස්තුවෙන් ඉවත් වේ. (ඔබේ උපාංගයේ බ්‍රවුසරයේ සුරැකේ.)": "Questions you get wrong on any tab are added here automatically – each question appears only once. Answer it correctly here and it is removed from the list. (Saved in this browser on your device.)", "අර්ථ සඟවන්න (ස්වයං පරීක්ෂණය)": "Hide meanings (self-test)", "ප්‍රගතිය මකන්න": "Clear progress", "ප්‍රශ්න පත්‍රයේ සැකැස්ම": "Paper layout", "මුළු ප්‍රශ්න සංඛ්‍යාව": "Total questions", "45 – සංඥා 20 · මාර්ග සලකුණු 10 · මාර්ග නීති 10 · තාක්ෂණික දැනුම 5": "45 – Signs 20 · Road markings 10 · Road rules 10 · Technical knowledge 5", "සැහැල්ලු වාහන": "Light vehicles", "ප්‍රශ්න 40ට පිළිතුරු දෙන්න · අවම වශයෙන් 30ක් නිවැරදි විය යුතුය": "Answer 40 questions · at least 30 must be correct", "බර වාහන": "Heavy vehicles", "ප්‍රශ්න 45ටම පිළිතුරු දෙන්න · අවම වශයෙන් 35ක් නිවැරදි විය යුතුය": "Answer all 45 questions · at least 35 must be correct", "සංඥා හඳුනා ගැනීම": "Recognising signs", "කහ පැහැති දියමන්ති (කොණ මත සිටුවූ හතරැස්) හැඩය · කළු දාරය · කළු සංකේතය. (රතු දාර සහිත සුදු ත්‍රිකෝණ නොවේ!)": "Yellow diamond (square standing on a corner) · black border · black symbol. (Not a white triangle with a red border!)", "සුදු රවුම · රතු වළල්ල · කළු සංකේතය · බොහෝ විට රතු ඇල තීරුවක්": "White circle · red ring · black symbol · often a red diagonal bar", "සුදු රවුම · රතු වළල්ල · කළු ඊතලය · රතු ඇල තීරුවක්": "White circle · red ring · black arrow · red diagonal bar", "නැත": "none", "(ශ්‍රී ලංකාවේ නිල් රවුම් නොවේ)": "(not blue circles in Sri Lanka)", "නිල් රවුම · රතු වළල්ල: තනි තීරුවක් = වාහන නැවැත්වීම තහනම් · X = නැවැත්වීම සහ නතර කිරීම තහනම් · I = ඔත්තේ දින · II = ඉරට්ටේ දින": "Blue circle · red ring: one bar = no parking · X = no parking and no standing · I = odd dates · II = even dates", "රතු වළල්ල තුළ අංක – වේගය, පළල, උස, බර": "Numbers inside a red ring – speed, width, height, weight", "නවතිනු (STOP)": "Stop (STOP)", "රතු අෂ්ටාස්‍රය – සෑම විටම සම්පූර්ණයෙන් නවතින්න": "Red octagon – always stop completely", "යටිකුරු ත්‍රිකෝණය – මාර්ගය පැහැදිලි නම් නොනවතා යා හැක": "Inverted triangle – you may go without stopping if the road is clear", "සෘජුකෝණාස්‍ර · කොළ = ජාතික මහාමාර්ග · නිල් = අධිවේගී මාර්ග / පහසුකම්": "Rectangles · green = national highways · blue = expressways / facilities", "වේග සීමා (කි.මී./පැය)": "Speed limits (km/h)", "මෝටර් රථ, ද්විත්ව කාර්ය වාහන, මෝටර් සයිකල්": "Motor cars, dual-purpose vehicles, motorcycles", "නාගරික 50 · නාගරික නොවන 70 · අධිවේගී 100": "Urban 50 · Non-urban 70 · Expressway 100", "බස් රථ, ලොරි රථ": "Buses, lorries", "නාගරික 50 · නාගරික නොවන 60 · අධිවේගී 100": "Urban 50 · Non-urban 60 · Expressway 100", "ත්‍රිරෝද රථ, ට්‍රැක්ටර්": "Three-wheelers, tractors", "සෑම ප්‍රදේශයකම 40 · අධිවේගී මාර්ගයේ තහනම්": "40 everywhere · banned on expressways", "අධිවේගී මාර්ගයේ තහනම්": "Banned on expressways", "පදිකයින්, ත්‍රිරෝද රථ, මෝටර් සයිකල්, ට්‍රැක්ටර්, පාපැදි · ඇතුල්වීමේ/පිටවීමේ මාර්ග 60": "Pedestrians, three-wheelers, motorcycles, tractors, bicycles · entry/exit ramps 60", "කැඩුණු මැද රේඛාව": "Broken centre line", "ආරක්ෂිත නම් ඉස්සර කිරීමට / දකුණට හැරවීමට හරහා යා හැක": "May cross to overtake / turn right when safe", "තනි අඛණ්ඩ රේඛාව": "Single continuous line", "දකුණට හැරවීමට හෝ හදිසි අනතුරක් වළක්වා ගැනීමට පමණි · ඉස්සර කිරීම තහනම්": "Only to turn right or to avoid an emergency · no overtaking", "ද්විත්ව අඛණ්ඩ රේඛා": "Double continuous lines", "කිසි විටෙකත් හරහා නොයන්න (දකුණට හැරවීමට පවා නොවේ)": "Never cross (not even to turn right)", "මිශ්‍ර රේඛා": "Mixed lines", "ඔබේ පස ඇති රේඛාව අනුව තීරණය වේ – කැඩුණු රේඛාවක් නම් ඉස්සර කළ හැක": "The line on your side decides – broken line means you may overtake", "අනතුරු හැඟවීමේ රේඛාව": "Hazard warning line", "දිගු කැබලි – ඉදිරියේ අඛණ්ඩ රේඛාවක් (අවම 50 m කට පෙර)": "Long dashes – a continuous line ahead (at least 50 m before it)", "කහ රේඛා (දාරයේ)": "Yellow lines (at the edge)", "තනි රේඛාව = වාහන නැවැත්වීම තහනම් · ද්විත්ව රේඛා = නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම්": "Single line = no parking · double lines = no parking, loading/unloading or standing", "කහ මංසන්ධි කොටුව": "Yellow box junction", "පිටවීම පැහැදිලි නම් පමණක් ඇතුල් වන්න (දකුණට හැරවීම හැර)": "Enter only if your exit is clear (except when turning right)", "වාහන නැවැත්වීම තහනම් දුර ප්‍රමාණ": "No-parking distances", "ප්‍රධාන මාර්ග මංසන්ධිය": "Major road junction", "සුළු මාර්ග මංසන්ධිය": "Minor road junction", "බස් නැවතුම / පදික මාරුව": "Bus stop / pedestrian crossing", "පෙර 30 m · පසු 15 m": "30 m before · 15 m after", "රථ වාහන ආලෝක සංඥා සහිත මංසන්ධිය": "Junction with traffic lights", "පෙර 50 m": "50 m before", "මාර්ග නීති සහ රථ වාහන ආලෝක සංඥා": "Road rules and traffic lights", "ආලෝක සංඥා අනුපිළිවෙළ": "Light sequence", "රතු → රතු+කහ → කොළ → කහ → රතු": "Red → Red+Amber → Green → Amber → Red", "පාලන ප්‍රමුඛතාව": "Order of control", "පොලිස් නිලධාරී &gt; ආලෝක සංඥා &gt; මාර්ග සංඥා/සලකුණු &gt; දකුණු පසින් එන වාහනවලට මාර්ගය ඉඩ දීම": "Police officer &gt; traffic lights &gt; signs/markings &gt; give way to the right", "පාලනයක් නොමැති මංසන්ධිය": "Uncontrolled junction", "දකුණු පසින් පැමිණෙන වාහනයට මාර්ගය ඉඩ දෙන්න": "Give way to the vehicle coming from the right", "වටරවුම": "Roundabout", "දක්ෂිණාවර්තව (මැද දූපත දකුණු පසින්) · දකුණු පසින් පැමිණෙන වාහනවලට මාර්ගය ඉඩ දෙන්න": "Clockwise (island on your right) · give way to vehicles coming from the right", "කඳු මාර්ග (සංඥා නොමැති)": "Hill roads (no signs)", "කන්ද නගින වාහනයට ප්‍රමුඛතාව": "The vehicle going uphill has priority", "අත් සංඥා (දකුණු අත)": "Hand signals (right arm)", "කෙළින් පිටතට දිගු කිරීම = දකුණට · ඉහළ පහළ සෙලවීම = වේගය අඩු කිරීම/නැවැත්වීම · වාමාවර්තව කරකැවීම = වමට": "Held straight out = right · moved up and down = slowing/stopping · rotated anti-clockwise = left", "රැගෙන යා යුතු ලේඛන": "Documents to carry", "රියදුරු බලපත්‍රය, රක්ෂණ සහතිකය (අවම තෙවන පාර්ශ්ව), ආදායම් බලපත්‍රය (ඉදිරිපස වම් පස), දුම් පරීක්ෂණ සහතිකය": "Driving licence, insurance certificate (at least third-party), revenue licence (front, left side), emission certificate", "ජංගම දුරකථනය": "Mobile phone", "රිය පදවන විට කිසි විටෙකත් භාවිත නොකළ යුතුය": "Never use it while driving", "අනතුරක් සිදු වූ විට": "After an accident", "නවතින්න · තුවාලකරු රෝහලට ගෙන යන්න · ළඟම පොලිසියට වහාම දැනුම් දෙන්න": "Stop · take the injured to hospital · report to the nearest police station immediately", "හදිසි දුරකථන අංක": "Emergency numbers", "පොලිසිය 119 · ගිලන් රථ 1990 · අධිවේගී මාර්ග 1969": "Police 119 · Ambulance 1990 · Expressway 1969", "මීටර් පුවරුවේ සංකේත (DMT පොතෙන්)": "Dashboard symbols (from the DMT book)", "වාහනයක මීටර් පුවරුව මත සහ ඉදිරි පුවරුව මත ඇති සලකුණු.": "Symbols on a vehicle's instrument panel and dashboard.", "තාක්ෂණික දැනුම": "Technical knowledge", "රතු අනතුරු ලාම්පු": "Red warning lights", "තෙල් පීඩනය, තිරිංග, එන්ජින් උෂ්ණත්වය, බැටරි – වහාම නවතින්න": "Oil pressure, brakes, engine temperature, battery – stop immediately", "කහ අනතුරු ලාම්පු": "Amber warning lights", "Check engine, ABS, ටයර් පීඩනය, ඉන්ධන අඩු වීම – ඉක්මනින් පරීක්ෂා කරවා ගන්න": "Check engine, ABS, tyre pressure, low fuel – get it checked soon", "ටයර් ගෙවී යාම": "Tyre wear", "මැද ගෙවී යාම = වාතය වැඩි වීම · දෙදාර ගෙවී යාම = වාතය අඩු වීම · එක් දාරයක් ගෙවී යාම = රෝද පෙළගැස්ම (alignment)": "Centre worn = over-inflated · both edges worn = under-inflated · one edge worn = wheel alignment", "බෑවුමකින් පහළට": "Going down a hill", "අඩු ගියරයක් භාවිත කරන්න – එන්ජින් තිරිංග · නියුට්‍රල් ගියරයෙන් ධාවනය නොකරන්න": "Use a low gear – engine braking · don't coast in neutral", "💬 යෝජනා පෙට්ටිය සහ නිවැරදි කිරීම්": "💬 Suggestion box and corrections", "ප්‍රශ්නයක පිළිතුරක් වැරදි යැයි සිතන්නේද? සිංහල වචන අපැහැදිලිද? නැතහොත් නව අදහසක් තිබේද? අප වෙත දන්වන්න – සෑම වාර්තාවක්ම පරීක්ෂා කර වෙබ් අඩවිය යාවත්කාලීන කරනු ලැබේ.": "Think an answer is wrong? Sinhala unclear? Have an idea? Let us know – every report is checked and the site is updated.", "නිවැරදි කිරීමක් යවන විට": "When sending a correction", "ප්‍රශ්නය": "Question", "«DMT පොත – ප්‍රශ්න අංක ..» ලෙස අංකය සඳහන් කරන්න (ප්‍රශ්නයේ «⚑ වාර්තා කරන්න» බොත්තම භාවිත කළ විට මෙය ස්වයංක්‍රීයව පිරවේ).": "Give the number as «DMT book – Question ..» (it is filled in automatically when you use the «⚑ Report» button on a question).", "නිවැරදි පිළිතුර": "Correct answer", "ඔබ නිවැරදි යැයි සිතන පිළිතුර සහ හේතුව.": "The answer you think is correct, and why.", "මූලාශ්‍රය": "Source", "හැකි නම් DMT අත්පොත, ගැසට් පත්‍රය හෝ වෙනත් සාක්ෂියක්.": "If possible, the DMT handbook, gazette or other proof.", "ප්‍රශ්න: මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ලිඛිත විභාග ප්‍රශ්න. සංඥා රූප: Wikimedia Commons සහ DMT අධ්‍යයන ද්‍රව්‍ය. මෙය නිල DMT වෙබ් අඩවියක් නොවේ – අධ්‍යයන කටයුතු සඳහා පමණි.": "Questions: Department of Motor Traffic (DMT) written exam questions. Sign images: Wikimedia Commons and DMT study material. This is not an official DMT site – for study only.", "මෙම ප්‍රශ්න මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුවේ (DMT) ආදර්ශ ප්‍රශ්න පත්‍රයේ මාතෘකා සහ 2015 අංක 02 දරන මාර්ග සංඥා රෙගුලාසි ඇසුරින් සකස් කර ඇත. සංඥා රූප: Wikimedia Commons (ශ්‍රී ලංකා 2015 සංඥා රෙගුලාසි අනුව). ප්‍රමුඛතා සංඥා කිහිපයක්, දුම්රිය හරස් මාර්ග ලකුණු, ආලෝක සංඥා සහ මාර්ග සලකුණු සරල කළ රූප වේ. නීති වෙනස් විය හැකි බැවින් විභාගයට පෙර නවතම DMT අත්පොත පරීක්ෂා කරන්න.": "These questions are based on the DMT model paper topics and the 2015 No. 02 road sign regulations. Sign images: Wikimedia Commons (per Sri Lanka 2015 sign regulations). A few priority signs, railway crossing marks, lights and road markings are simplified drawings. Rules may change, so check the latest DMT handbook before your exam."};
+const I18N_F={"ප්‍රශ්නය": "Question", "නිවැරදි": "correct", "සංඥා/සලකුණු": "Signs/markings", "DMT ප්‍රශ්න පොත": "DMT question book", "වැරදුණු ප්‍රශ්න": "Wrong answers","යන අර්ථය ඇති": "meaning – choose the sign", "මෙම මාර්ග සලකුණෙන් අදහස් වන්නේ කුමක්ද? (රතු මෝටර් රථය = ඔබ)": "What does this road marking mean? (red car = you)", "මෙම ආලෝක සංඥාවෙන් අදහස් වන්නේ කුමක්ද?": "What does this light signal mean?", "මෙම මාර්ග සංඥාවෙන් දැක්වෙන්නේ කුමක්ද?": "What does this road sign indicate?", "පොතේ අංක": "Book No.", "පොතේ නිවැරදි පිළිතුර": "Correct answer (book)", "මෙම ප්‍රශ්නයේ දෝෂයක් තිබේද? වාර්තා කරන්න": "Mistake in this question? Report it", "වැරදුණු වාර": "times wrong", "පැහැදිලි කිරීම": "Explanation", "නිවැරදියි – වැරදුණු ප්‍රශ්න ලැයිස්තුවෙන් ඉවත් කරන ලදී": "Correct – removed from the wrong-answers list", "සම්පූර්ණ ලකුණු! ඔබ විභාගයට සූදානම්. 🎯": "Full marks! You're ready for the exam. 🎯", "සමත් (අවම ලකුණු 30). වැරදුණු ප්‍රශ්න පරීක්ෂා කර නැවත ලකුණු 40 සඳහා උත්සාහ කරන්න": "Pass (minimum 30). Review the wrong ones and try again for 40", "සමත් වීමට අවශ්‍ය ලකුණු 30ට වඩා අඩුය – කෙටි සටහන් සහ සංඥා කියවා නැවත උත්සාහ කරන්න": "Below the pass mark of 30 – read the quick notes and signs, then try again", "අර්ථ පෙන්වන්න": "Show meanings", "අමතර: සංඥා හඳුනා ගැනීම": "Extra: sign recognition", "අමතර: මාර්ග සලකුණු": "Extra: road markings", "අමතර: මාර්ග නීති": "Extra: road rules", "අමතර: තාක්ෂණික දැනුම": "Extra: technical knowledge", "සියල්ල (පොත + අමතර)": "All (book + extra)", "තහවුරු කරන්නද?": "Confirm?", "වැරදුණු ප්‍රශ්න නොමැත. ප්‍රශ්න පත්‍රයක් හෝ පුහුණුවක් සිදු කරන්න – වැරදෙන ප්‍රශ්න මෙහි එකතු වේ (එකම ප්‍රශ්නය එක් වරක් පමණි).": "No wrong answers yet. Do a paper or practice – questions you get wrong are collected here (each only once).", "තහවුරු කරන්න – සියල්ල මකන්නද?": "Confirm – clear everything?", "යෝජනාවක් හෝ නිවැරදි කිරීමක් යවන්න": "Send a suggestion or correction", "යෝජනා පෝරමය තවම සකසා නැත": "The feedback form isn't set up yet"};
+const I18N_G={"warn": ["Warning signs", "Yellow diamond, black border and symbol – warns of a hazard ahead."], "proh": ["Prohibitory signs", "White circle, red ring – shows that something is prohibited."], "park": ["Parking signs", "Blue circle, red ring – applies from the sign to the next junction."], "rest": ["Restrictive signs", "Numbers inside a red ring – speed, width, height and weight limits."], "mand": ["Mandatory signs", "Red ring, black arrow, no red bar – shows what you must do."], "prio": ["Priority signs", "Shows who has priority at junctions and narrow places."], "info": ["Information signs", "Rectangles – facilities and directions."], "light": ["Traffic light signals", "Traffic and pedestrian lights."], "mark": ["Road markings", "Red car = you (driving forward in the left lane)."]};
+for(const k of Object.keys(I18N_D)){if(k.includes('&gt;'))I18N_D[k.replace(/&gt;/g,'>')]=I18N_D[k];}
+const FRK=Object.keys(I18N_F).sort((a,b)=>b.length-a.length);
+function trNode(n){let t=n.nodeValue,k=t.trim();if(!k||!/[\u0D80-\u0DFF]/.test(k))return;
+  if(I18N_D[k]!==undefined){n.nodeValue=t.replace(k,I18N_D[k].replace(/&gt;/g,'>'));return;}
+  let c=t;for(const f of FRK)if(c.includes(f))c=c.split(f).join(I18N_F[f]);if(c!==t)n.nodeValue=c;}
+function trAll(root){if(!EN)return;const w=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())trNode(n);}
+function setLang(l){try{localStorage.setItem('dmt_lang',l);}catch(e){}location.reload();}
+</script>
 <script src="book.js"></script>
 <script>
 // ================= DRAWING =================
@@ -250,70 +267,70 @@ const add=(gr,svg,si,en)=>SG.push({gr,svg,si,en});
 const IM=c=>`<img src="img/${c}.png" alt="${c}">`;
 const addI=(gr,c,si,en)=>add(gr,IM(c),si,en+' ('+c+')');
 // WARNING (DWS)
-[['DWS-01','වමට වංගුවක් ඉදිරියෙන්','Left bend ahead'],
-['DWS-02','දකුණට වංගුවක් ඉදිරියෙන්','Right bend ahead'],
-['DWS-03','පළමුව වමට හැරෙන ද්විත්ව වංගුවක් ඉදිරියෙන්','Double bend, first to left'],
-['DWS-04','පළමුව දකුණට හැරෙන ද්විත්ව වංගුවක් ඉදිරියෙන්','Double bend, first to right'],
-['DWS-05','දකුණට කොණ්ඩකටු (හෙයාපින්) වංගුවක් ඉදිරියෙන්','Hairpin bend to right ahead'],
-['DWS-06','වමට කොණ්ඩකටු (හෙයාපින්) වංගුවක් ඉදිරියෙන්','Hairpin bend to left ahead'],
-['DWS-07','ද්විත්ව මංතීරු (මැද දූපත් සහිත) මාර්ගය අවසන් වේ','Dual carriageway ends'],
-['DWS-08','ද්විත්ව මංතීරු (මැද දූපත් සහිත) මාර්ගය ආරම්භ වේ','Dual carriageway starts ahead'],
-['DWS-09','මාර්ගය පටු වේ (දෙපසින්)','Road narrows ahead'],
-['DWS-10','මාර්ගය වම් පසින් පටු වේ','Road narrows on left'],
-['DWS-11','මාර්ගය දකුණු පසින් පටු වේ','Road narrows on right'],
-['DWS-12','හතරමං හන්දියක් ඉදිරියෙන්','Intersection ahead'],
-['DWS-13','පළමු අතුරු මාර්ගය වමට ඇති පියගැට (staggered) හන්දියක්','Staggered junction, first side road left'],
-['DWS-14','පළමු අතුරු මාර්ගය දකුණට ඇති පියගැට (staggered) හන්දියක්','Staggered junction, first side road right'],
-['DWS-15','«T» හන්දියක් ඉදිරියෙන්','T junction ahead'],
-['DWS-16','«Y» හන්දියක් ඉදිරියෙන්','Y junction ahead'],
-['DWS-17','වම් පසින් වාහන ප්‍රවාහයක් එක්වේ','Traffic from left merges'],
-['DWS-18','වම් පසින් අතුරු මාර්ගයක් සෘජු කෝණයෙන් හමුවේ','Side road from left at right angle'],
-['DWS-19','දකුණු පසින් වාහන ප්‍රවාහයක් එක්වේ','Traffic from right merges'],
-['DWS-20','දකුණු පසින් අතුරු මාර්ගයක් සෘජු කෝණයෙන් හමුවේ','Side road from right at right angle'],
-['DWS-21','පටු පාලමක් හෝ බෝක්කුවක් ඉදිරියෙන්','Narrow bridge or culvert ahead'],
-['DWS-22','ද්වි-මාර්ග (දෙපැත්තට) ගමනාගමනය ඉදිරියෙන්','Two-way traffic ahead'],
-['DWS-23','«නවතින්න» (STOP) සංඥාවක් ඉදිරියෙන්','Stop sign ahead'],
-['DWS-24','«මග දෙන්න» සංඥාවක් ඉදිරියෙන්','Give way sign ahead'],
-['DWS-25','වටරවුමක් ඉදිරියෙන්','Roundabout ahead'],
-['DWS-26','සංඥා ලාම්පු ඉදිරියෙන්','Light signals ahead'],
-['DWS-27','භයානක බෑවුමක් (පහළට) ඉදිරියෙන්','Dangerous descent ahead'],
-['DWS-28','භයානක කඳු නැගීමක් ඉදිරියෙන්','Dangerous ascent ahead'],
-['DWS-29','ලිස්සන සුළු මාර්ගය ඉදිරියෙන්','Slippery road ahead'],
+[['DWS-01','වමට වංගුව ඉදිරියෙන්','Left bend ahead'],
+['DWS-02','දකුණට වංගුව ඉදිරියෙන්','Right bend ahead'],
+['DWS-03','පළමුව වමට ද්විත්ව වංගුව ඉදිරියෙන්','Double bend, first to left'],
+['DWS-04','පළමුව දකුණට ද්විත්ව වංගුව ඉදිරියෙන්','Double bend, first to right'],
+['DWS-05','දකුණට වැලමිට වංගුව ඉදිරියෙන්','Hairpin bend to right ahead'],
+['DWS-06','වමට වැලමිට වංගුව ඉදිරියෙන්','Hairpin bend to left ahead'],
+['DWS-07','ද්විත්ව රථ මාර්ගය අවසානය','Dual carriageway ends'],
+['DWS-08','ද්විත්ව රථ මාර්ගය ආරම්භය ඉදිරියෙන්','Dual carriageway starts ahead'],
+['DWS-09','ඉදිරියෙන් මාර්ගය පටු වේ (දෙපසින්)','Road narrows ahead'],
+['DWS-10','මාර්ගයේ වම් පස පටු වීම ඉදිරියෙන්','Road narrows on left'],
+['DWS-11','මාර්ගයේ දකුණු පස පටු වීම ඉදිරියෙන්','Road narrows on right'],
+['DWS-12','හතරමං මංසන්ධිය ඉදිරියෙන්','Intersection ahead'],
+['DWS-13','පළමු අතුරු මාර්ගය වමට ඇති (staggered) මංසන්ධිය ඉදිරියෙන්','Staggered junction, first side road left'],
+['DWS-14','පළමු අතුරු මාර්ගය දකුණට ඇති (staggered) මංසන්ධිය ඉදිරියෙන්','Staggered junction, first side road right'],
+['DWS-15','«T» මංසන්ධිය ඉදිරියෙන්','T junction ahead'],
+['DWS-16','«Y» මංසන්ධිය ඉදිරියෙන්','Y junction ahead'],
+['DWS-17','වම් පසින් රථවාහන එක්වීම ඉදිරියෙන්','Traffic from left merges'],
+['DWS-18','වම් පසින් සෘජු කෝණයෙන් හමුවන අතුරු මාර්ගය','Side road from left at right angle'],
+['DWS-19','දකුණු පසින් රථවාහන එක්වීම ඉදිරියෙන්','Traffic from right merges'],
+['DWS-20','දකුණු පසින් සෘජු කෝණයෙන් හමුවන අතුරු මාර්ගය','Side road from right at right angle'],
+['DWS-21','පටු පාලම හෝ බෝක්කුව ඉදිරියෙන්','Narrow bridge or culvert ahead'],
+['DWS-22','ද්වි-මාර්ග (දෙපසට) ගමනාගමනය ඉදිරියෙන්','Two-way traffic ahead'],
+['DWS-23','«නවතිනු» (STOP) සංඥාව ඉදිරියෙන්','Stop sign ahead'],
+['DWS-24','«මාර්ගය ඉඩදෙනු» සංඥාව ඉදිරියෙන්','Give way sign ahead'],
+['DWS-25','වටරවුම ඉදිරියෙන්','Roundabout ahead'],
+['DWS-26','රථ වාහන ආලෝක සංඥා ඉදිරියෙන්','Light signals ahead'],
+['DWS-27','භයානක බෑවුම (පහළට) ඉදිරියෙන්','Dangerous descent ahead'],
+['DWS-28','භයානක කඳු නැග්ම ඉදිරියෙන්','Dangerous ascent ahead'],
+['DWS-29','ලිස්සනසුලු මාර්ගය ඉදිරියෙන්','Slippery road ahead'],
 ['DWS-30','ලිහිල් බොරළු (ගල් විසිවීම) සහිත මාර්ගය','Loose gravel'],
 ['DWS-31','ගල් පෙරළීම (ගල් වැටීම) ඉදිරියෙන්','Falling rocks ahead'],
-['DWS-32','පදික මාරුවක් ඉදිරියෙන්','Pedestrian crossing ahead'],
-['DWS-33','ළමුන් සිටින / මාරුවන ස්ථානයක් (පාසල)','Children crossing ahead'],
-['DWS-34','අන්ධ පදිකයින් මාරුවන ස්ථානයක්','Blind pedestrians crossing'],
-['DWS-35','මාර්ග වැඩ ඉදිරියෙන්','Road works ahead'],
-['DWS-36','ගේට්ටු (බාධක) සහිත දුම්රිය හරස් මාර්ගයක් ඉදිරියෙන්','Level crossing with gates ahead'],
-['DWS-37','ගේට්ටු රහිත (අනාරක්ෂිත) දුම්රිය හරස් මාර්ගයක් ඉදිරියෙන්','Unprotected level crossing ahead'],
-['DWS-38','බස් මංතීරුවක් ඉදිරියෙන්','Bus lane ahead'],
-['DWS-39','බයිසිකල් මංතීරුවක් ඉදිරියෙන්','Cycle lane ahead'],
-['DWS-40','බයිසිකල් කරුවන් හරස් වන ස්ථානයක් ඉදිරියෙන්','Cyclists crossing ahead'],
-['DWS-41','ගවයින් (සතුන්) හරස් වන ස්ථානයක්','Cattle crossing ahead'],
-['DWS-42','ජල තොටුපළක් / ගං ඉවුරක් ඉදිරියෙන්','Quayside or riverbank ahead'],
-['DWS-43','භයානක ප්‍රපාතයක් ඉදිරියෙන්','Dangerous cliff ahead'],
-['DWS-44','වේග බාධකයක් (Road hump) ඉදිරියෙන්','Road hump ahead'],
-['DWS-45','අසමාන (රළු) මාර්ගය ඉදිරියෙන්','Uneven road ahead'],
-['DWS-46','ගිල්මක් හෝ කෝස්වේ එකක් ඉදිරියෙන්','Dip or causeway ahead'],
-['DWS-47','උස් වූ (ආරුක්කු) පාලමක් ඉදිරියෙන්','Hump bridge ahead'],
-['DWS-48','උමගක් ඉදිරියෙන්','Tunnel ahead'],
+['DWS-32','පදික මාරුව ඉදිරියෙන්','Pedestrian crossing ahead'],
+['DWS-33','ළමයින් මාරුවන ස්ථානය ඉදිරියෙන් (පාසල)','Children crossing ahead'],
+['DWS-34','අන්ධ පදිකයින් මාරුවන ස්ථානය','Blind pedestrians crossing'],
+['DWS-35','මාර්ගයේ වැඩ කටයුතු ඉදිරියෙන්','Road works ahead'],
+['DWS-36','ගේට්ටු (බාධක) සහිත දුම්රිය හරස් මාර්ගය ඉදිරියෙන්','Level crossing with gates ahead'],
+['DWS-37','ආරක්ෂා කර නොමැති දුම්රිය හරස් මාර්ගය ඉදිරියෙන්','Unprotected level crossing ahead'],
+['DWS-38','බස් මංතීරුව ඉදිරියෙන්','Bus lane ahead'],
+['DWS-39','පාපැදි මංතීරුව ඉදිරියෙන්','Cycle lane ahead'],
+['DWS-40','පාපැදිකරුවන් මාරුවන ස්ථානය ඉදිරියෙන්','Cyclists crossing ahead'],
+['DWS-41','ගවයින් (සතුන්) මාරුවන ස්ථානය ඉදිරියෙන්','Cattle crossing ahead'],
+['DWS-42','තොටුපළ හෝ ගං ඉවුර ඉදිරියෙන්','Quayside or riverbank ahead'],
+['DWS-43','භයානක ප්‍රපාතය ඉදිරියෙන්','Dangerous cliff ahead'],
+['DWS-44','වේග බාධකය (Road hump) ඉදිරියෙන්','Road hump ahead'],
+['DWS-45','රළු (අසමාන) මාර්ගය ඉදිරියෙන්','Uneven road ahead'],
+['DWS-46','ගිල්ම හෝ පහත් මාර්ග කොටස (causeway) ඉදිරියෙන්','Dip or causeway ahead'],
+['DWS-47','උස් වූ (ආරුක්කු) පාලම ඉදිරියෙන්','Hump bridge ahead'],
+['DWS-48','උමග ඉදිරියෙන්','Tunnel ahead'],
 ['DWS-49','පහතින් පියාසර කරන ගුවන් යානා','Low flying aircraft']].forEach(x=>addI('warn',...x));
 const xsign=(two)=>SV(`<g transform="translate(60 ${two?52:60})"><g transform="rotate(45)"><rect x="-50" y="-9" width="100" height="18" fill="#fff" stroke="#d0211c" stroke-width="3"/></g><g transform="rotate(-45)"><rect x="-50" y="-9" width="100" height="18" fill="#fff" stroke="#d0211c" stroke-width="3"/></g></g>${two?'<g transform="translate(60 106)"><rect x="-22" y="-7" width="44" height="14" fill="#fff" stroke="#d0211c" stroke-width="3"/></g>':''}`);
 add('warn',xsign(false),'දුම්රිය හරස් මාර්ගය (තනි පීලි මාර්ගය) – හරස් ලකුණ','Railway level crossing (single track)');
-add('warn',xsign(true),'පීලි දෙකක් හෝ වැඩි දුම්රිය හරස් මාර්ගය','Railway crossing, two or more tracks');
+add('warn',xsign(true),'පීලි දෙකක් හෝ ඊට වැඩි දුම්රිය හරස් මාර්ගය','Railway crossing, two or more tracks');
 
 
 // PROHIBITORY (PHS)
-[['PHS-01','ඇතුළුවීම තහනම්','No entry'],
+[['PHS-01','ඇතුල්වීම තහනම්','No entry'],
 ['PHS-02','වමට හැරවීම තහනම්','No left turn'],
 ['PHS-03','දකුණට හැරවීම තහනම්','No right turn'],
-['PHS-04','«U» හැරවීම තහනම්','No U-turn'],
+['PHS-04','«U» හැඩයට හැරවීම තහනම්','No U-turn'],
 ['PHS-05','ඉස්සර කිරීම (overtaking) තහනම්','No overtaking'],
 ['PHS-06','ඉස්සර කිරීම තහනම අවසන්','End of no overtaking'],
 ['PHS-07','භාණ්ඩ ප්‍රවාහන වාහනවලට (ටොන් 3.5ට වැඩි) ඉස්සර කිරීම තහනම්','No overtaking by goods vehicles'],
 ['PHS-08','භාණ්ඩ ප්‍රවාහන වාහනවලට ඉස්සර කිරීම තහනම අවසන්','End of no overtaking by goods vehicles'],
-['PHS-09','නළා හඬ නැගීම තහනම් (රෝහල්, පාසල්, අධිකරණ අසල)','No horning'],
+['PHS-09','නළා නාද කිරීම තහනම් (රෝහල්, පාසල්, අධිකරණ අසල)','No horning'],
 ['PHS-10','සියලු වාහන සඳහා මාර්ගය වසා ඇත','Road closed (all vehicles)'],
 ['PHS-11','මෝටර් වාහන සඳහා මාර්ගය වසා ඇත','Road closed for motor vehicles'],
 ['PHS-12','බස් රථ සඳහා මාර්ගය වසා ඇත','Road closed for buses'],
@@ -323,50 +340,50 @@ add('warn',xsign(true),'පීලි දෙකක් හෝ වැඩි දු�
 ['PHS-16','අත් ට්‍රැක්ටර් (ඉඩම් වාහන) සඳහා මාර්ගය වසා ඇත','Road closed for hand tractors'],
 ['PHS-17','ත්‍රිරෝද රථ සඳහා මාර්ගය වසා ඇත','Road closed for three-wheelers'],
 ['PHS-18','මෝටර් සයිකල් සඳහා මාර්ගය වසා ඇත','Road closed for motorcycles'],
-['PHS-19','බයිසිකල් සඳහා මාර්ගය වසා ඇත','Road closed for bicycles'],
-['PHS-20','සතුන් ඇදගෙන යන කරත්ත සඳහා මාර්ගය වසා ඇත','Road closed for animal-drawn carts'],
+['PHS-19','පාපැදි සඳහා මාර්ගය වසා ඇත','Road closed for bicycles'],
+['PHS-20','සතුන් බැඳි කරත්ත සඳහා මාර්ගය වසා ඇත','Road closed for animal-drawn carts'],
 ['PHS-21','අත් කරත්ත සඳහා මාර්ගය වසා ඇත','Road closed for handcarts'],
-['PHS-22','පදිකයින්ට ඇතුළුවීම තහනම්','Road closed for pedestrians']].forEach(x=>addI('proh',...x));
+['PHS-22','පදිකයින්ට ඇතුල්වීම තහනම්','Road closed for pedestrians']].forEach(x=>addI('proh',...x));
 // PARKING
 [['PHS-23','වාහන නැවැත්වීම (parking) තහනම්','No parking'],
-['PHS-24','වාහන නැවැත්වීම සහ නතර කර තැබීම තහනම්','No parking and standing'],
+['PHS-24','වාහන නැවැත්වීම සහ නතර කිරීම තහනම්','No parking and standing'],
 ['PHS-25','ඔත්තේ දිනවල වාහන නැවැත්වීම තහනම්','No parking on odd dates'],
 ['PHS-26','ඉරට්ටේ දිනවල වාහන නැවැත්වීම තහනම්','No parking on even dates']].forEach(x=>addI('park',...x));
 // RESTRICTIVE (RSS)
-[['RSS-01','පළල සීමාව (නියමිත පළලට වඩා පළල වාහන තහනම්)','Width limit'],
-['RSS-02','උස සීමාව (නියමිත උසට වඩා උස වාහන තහනම්)','Height limit'],
-['RSS-03','බර සීමාව (පැටවූ බර සහිතව)','Weight limit'],
+[['RSS-01','පළල සීමාව (නියමිත පළල ඉක්මවන වාහන තහනම්)','Width limit'],
+['RSS-02','උස සීමාව (නියමිත උස ඉක්මවන වාහන තහනම්)','Height limit'],
+['RSS-03','බර සීමාව (පැටවූ බර ද ඇතුළුව)','Weight limit'],
 ['RSS-04','එක් අක්ෂයක් මත බර සීමාව','Axle weight limit'],
-['RSS-05','ගොඩනැගිලි සහිත (නාගරික) ප්‍රදේශවල වේග සීමාව (ත්‍රිරෝද හා ට්‍රැක්ටර් හැර)','Speed limit – built-up areas'],
-['RSS-06','නාගරික නොවන ප්‍රදේශවල සැහැල්ලු වාහන වේග සීමාව','Speed limit – light vehicles outside built-up areas'],
-['RSS-07','නාගරික නොවන ප්‍රදේශවල බර වාහන (බස්, ලොරි) වේග සීමාව','Speed limit – heavy vehicles outside built-up areas'],
+['RSS-05','නාගරික (ගොඩනැගිලි සහිත) ප්‍රදේශවල වේග සීමාව (ත්‍රිරෝද රථ හා ට්‍රැක්ටර් හැර)','Speed limit – built-up areas'],
+['RSS-06','නාගරික නොවන ප්‍රදේශවල සැහැල්ලු වාහන සඳහා වේග සීමාව','Speed limit – light vehicles outside built-up areas'],
+['RSS-07','නාගරික නොවන ප්‍රදේශවල බර වාහන (බස්, ලොරි) සඳහා වේග සීමාව','Speed limit – heavy vehicles outside built-up areas'],
 ['RSS-08','ත්‍රිරෝද රථ හා ට්‍රැක්ටර් සඳහා වේග සීමාව (සෑම ප්‍රදේශයකම)','Speed limit – three-wheelers & land vehicles'],
-['RSS-09','පාසල්, රෝහල් ආදී ස්ථානවල සියලු වාහන සඳහා වේග සීමාව','Speed limit – school & hospital areas'],
+['RSS-09','පාසල් හා රෝහල් ආශ්‍රිත ප්‍රදේශවල සියලු වාහන සඳහා වේග සීමාව','Speed limit – school & hospital areas'],
 ['RSS-10','වේග සීමාව අවසන්','End of speed limit']].forEach(x=>addI('rest',...x));
 // MANDATORY (MNS)
 [['MNS-01','වමට හැරෙන්න (අනිවාර්ය)','Turn left'],
 ['MNS-02','දකුණට හැරෙන්න (අනිවාර්ය)','Turn right'],
 ['MNS-03','කෙළින්ම ඉදිරියට යන්න (අනිවාර්ය)','Proceed straight ahead'],
-['MNS-04','ඉදිරි හන්දියෙන් වමට හැරෙන්න','Turn left ahead'],
-['MNS-05','ඉදිරි හන්දියෙන් දකුණට හැරෙන්න','Turn right ahead'],
+['MNS-04','ඉදිරියෙන් වමට හැරෙන්න','Turn left ahead'],
+['MNS-05','ඉදිරියෙන් දකුණට හැරෙන්න','Turn right ahead'],
 ['MNS-06','සංඥාවේ වම් පසින් යන්න','Keep left'],
 ['MNS-07','සංඥාවේ දකුණු පසින් යන්න','Keep right'],
-['MNS-08','ඕනෑම පැත්තකින් යා හැක','Pass either side'],
+['MNS-08','ඕනෑම පසකින් ගමන් කළ හැක','Pass either side'],
 ['MNS-09','අනිවාර්ය වටරවුම','Compulsory roundabout']].forEach(x=>addI('mand',...x));
 // PRIORITY
-addI('prio','PRS-01','නවතින්න – නැවතුම් රේඛාවේ සම්පූර්ණයෙන් නවතා මග දෙන්න','Stop');
-add('prio',SV('<polygon points="10,18 110,18 60,106" fill="#fff" stroke="#d0211c" stroke-width="10" stroke-linejoin="round"/>'),'මග දෙන්න','Give way');
-add('prio',SV('<rect x="20" y="20" width="80" height="80" transform="rotate(45 60 60)" fill="#fff" stroke="#111" stroke-width="2"/><rect x="34" y="34" width="52" height="52" transform="rotate(45 60 60)" fill="#f7c600"/>'),'ප්‍රමුඛතා මාර්ගය (ඔබ ප්‍රධාන මාර්ගයේ)','Priority road');
+addI('prio','PRS-01','නවතිනු – නැවතුම් රේඛාව අසල සම්පූර්ණයෙන් නවතා මාර්ගය ඉඩ දෙන්න','Stop');
+add('prio',SV('<polygon points="10,18 110,18 60,106" fill="#fff" stroke="#d0211c" stroke-width="10" stroke-linejoin="round"/>'),'මාර්ගය ඉඩදෙනු','Give way');
+add('prio',SV('<rect x="20" y="20" width="80" height="80" transform="rotate(45 60 60)" fill="#fff" stroke="#111" stroke-width="2"/><rect x="34" y="34" width="52" height="52" transform="rotate(45 60 60)" fill="#f7c600"/>'),'ප්‍රමුඛතා මාර්ගය (ඔබ ප්‍රධාන මාර්ගයේ ගමන් කරයි)','Priority road');
 add('prio',SV('<rect x="20" y="20" width="80" height="80" transform="rotate(45 60 60)" fill="#fff" stroke="#111" stroke-width="2"/><rect x="34" y="34" width="52" height="52" transform="rotate(45 60 60)" fill="#f7c600"/><line x1="30" y1="90" x2="90" y2="30" stroke="#111" stroke-width="9"/>'),'ප්‍රමුඛතා මාර්ගය අවසන්','End of priority road');
-add('prio',SV(`<circle cx="60" cy="60" r="50" fill="#fff" stroke="#d0211c" stroke-width="11"/><path d="M45 32 L56 46 H49 V88 H41 V46 H34 Z" fill="#d0211c"/><path d="M75 88 L86 74 H79 V32 H71 V74 H64 Z" fill="#111"/>`),'ඉදිරියෙන් එන වාහනවලට ප්‍රමුඛතාව (ඔබ මග දිය යුතුය)','Priority for oncoming traffic');
+add('prio',SV(`<circle cx="60" cy="60" r="50" fill="#fff" stroke="#d0211c" stroke-width="11"/><path d="M45 32 L56 46 H49 V88 H41 V46 H34 Z" fill="#d0211c"/><path d="M75 88 L86 74 H79 V32 H71 V74 H64 Z" fill="#111"/>`),'ඉදිරියෙන් එන වාහනවලට ප්‍රමුඛතාව (ඔබ මාර්ගය ඉඩ දිය යුතුය)','Priority for oncoming traffic');
 add('prio',SV('<rect x="12" y="12" width="96" height="96" rx="6" fill="#1f4fa8"/><path d="M42 24 L56 44 H48 V96 H36 V44 H28 Z" fill="#fff"/><path d="M78 96 L92 76 H84 V24 H72 V76 H64 Z" fill="#d0211c"/>'),'ඉදිරියෙන් එන වාහනවලට වඩා ඔබට ප්‍රමුඛතාව','Priority over oncoming traffic');
 // ADDITIONAL PANELS
-[['APR-08','පාසල – ප්‍රධාන සංඥාව පාසල් ප්‍රදේශයට අදාළ බව','School panel'],
+[['APR-08','පාසල – ප්‍රධාන සංඥාව පාසල් ප්‍රදේශයට අදාළ වේ','School panel'],
 ['APR-13','නියමිත වේලාවන්හිදී පමණක් සංඥාව බලපායි (උදෑසන 5 – රාත්‍රී 9)','Time panel'],
 ['APR-14','සංඥාව අදාළ වන වාහන වර්ග දක්වන පුවරුව','Vehicle category panel']].forEach(x=>addI('info',...x));
 // INFORMATIVE (OSD / IS)
 [['OSD-01','පදික මාරුව','Pedestrian crossing'],
-['OSD-02','එක් මාර්ග වීදිය (One way)','One-way street'],
+['OSD-02','ඒක දිශා මාර්ගය (One way)','One-way street'],
 ['OSD-03','රෝහල','Hospital'],
 ['OSD-04','වාහන නැවැත්වීමේ ස්ථානය','Parking place'],
 ['OSD-05','ආබාධිත පුද්ගලයින් සඳහා පහසුකම්','Facilities for disabled persons'],
@@ -379,7 +396,7 @@ add('prio',SV('<rect x="12" y="12" width="96" height="96" rx="6" fill="#1f4fa8"/
 ['OSD-19','තොරතුරු මධ්‍යස්ථානය','Information'],
 ['OSD-20','කර්මාන්ත ප්‍රදේශය','Industrial area'],
 ['OSD-21','ආපනශාලාව','Restaurant'],
-['OSD-22','සැහැල්ලු ආහාර / තේ කඩය','Refreshments'],
+['OSD-22','සැහැල්ලු ආහාරපාන','Refreshments'],
 ['OSD-23','නවාතැන් / හෝටලය','Accommodation'],
 ['OSD-24','ඉන්ධන පිරවුම්හල','Fuel station'],
 ['OSD-25','වාහන අලුත්වැඩියා ස්ථානය','Vehicle repair'],
@@ -389,146 +406,147 @@ add('prio',SV('<rect x="12" y="12" width="96" height="96" rx="6" fill="#1f4fa8"/
 ['IS-exit','අධිවේගී මාර්ගයේ පිටවීමේ මාර්ගය','Expressway exit ramp']].forEach(x=>addI('info',...x));
 // LIGHT SIGNALS
 const TL=(r,a,gn,arr)=>SV(`<rect x="40" y="8" width="40" height="104" rx="8" fill="#222"/><circle cx="60" cy="28" r="12" fill="${r?'#e53935':'#4a2a2a'}"/><circle cx="60" cy="60" r="12" fill="${a?'#ffb300':'#4a3f22'}"/><circle cx="60" cy="92" r="12" fill="${gn?'#43a047':'#22402a'}"/>${arr?'<path d="M60 84 V100 M52 92 L60 84 L68 92" stroke="#43a047" stroke-width="0" fill="none"/>':''}`);
-add('light',TL(1,0,0),'රතු – නැවතුම් රේඛාවෙන් ඔබ්බට නොයන්න','Red light');
-add('light',TL(1,1,0),'රතු සහ කහ එකට – කොළ වීමට ආසන්නයි, නමුත් තවමත් නොයන්න','Red and amber');
-add('light',TL(0,0,1),'කොළ – අනෙක් මාර්ග භාවිතා කරන්නන් ගැන සැලකිලිමත්ව ඉදිරියට යන්න','Green light');
-add('light',TL(0,1,0),'කහ පමණක් – ආරක්ෂිතව නැවැත්විය නොහැකි තරම් ළඟ නම් මිස නවතින්න','Amber light');
-add('light',SV(`<rect x="12" y="12" width="96" height="96" rx="6" fill="#222"/><circle cx="60" cy="60" r="38" fill="#43a047"/><path d="M60 26 L90 66 H74 V92 H46 V66 H30 Z" fill="#fff"/>`),'කොළ ඊතලය – රතු දැල්වෙමින් තිබුණද ඊතලය දිශාවට යා හැක','Green filter arrow');
-add('light',SV(`<rect x="22" y="8" width="76" height="104" rx="8" fill="#222"/><g transform="translate(60 35) scale(1.1)"><circle cx="0" cy="-12" r="4" fill="#e53935"/><path d="M-5 -7 H5 V6 H3 V16 H-3 V6 H-5 Z" fill="#e53935"/></g><g transform="translate(60 86) scale(1.1)">${person(.8).replace(/#111/g,'#43a047')}</g>`),'පදික සංඥා – රතු රූපය: පාර මාරු නොවන්න · කොළ ඇවිදින රූපය: මාරු විය හැක','Pedestrian light signals');
+add('light',TL(1,0,0),'රතු – නැවතුම් රේඛාව පසු කර ඉදිරියට නොයන්න','Red light');
+add('light',TL(1,1,0),'රතු සහ කහ එකවිට – කොළ දැල්වීමට ආසන්නය, නමුත් තවමත් ඉදිරියට නොයන්න','Red and amber');
+add('light',TL(0,0,1),'කොළ – අනෙකුත් මාර්ග භාවිත කරන්නන් පිළිබඳව සැලකිලිමත්ව ඉදිරියට යන්න','Green light');
+add('light',TL(0,1,0),'කහ පමණක් – ආරක්ෂිතව නවතා ගත නොහැකි තරම් ආසන්න නම් මිස නවතින්න','Amber light');
+add('light',SV(`<rect x="12" y="12" width="96" height="96" rx="6" fill="#222"/><circle cx="60" cy="60" r="38" fill="#43a047"/><path d="M60 26 L90 66 H74 V92 H46 V66 H30 Z" fill="#fff"/>`),'කොළ ඊතලය – රතු ලාම්පුව දැල්වෙමින් තිබුණද ඊතලය දක්වන දිශාවට ගමන් කළ හැක','Green filter arrow');
+add('light',SV(`<rect x="22" y="8" width="76" height="104" rx="8" fill="#222"/><g transform="translate(60 35) scale(1.1)"><circle cx="0" cy="-12" r="4" fill="#e53935"/><path d="M-5 -7 H5 V6 H3 V16 H-3 V6 H-5 Z" fill="#e53935"/></g><g transform="translate(60 86) scale(1.1)">${person(.8).replace(/#111/g,'#43a047')}</g>`),'පදික ආලෝක සංඥා – රතු රූපය: මාර්ගය මාරු නොවන්න · කොළ ඇවිදින රූපය: මාර්ගය මාරු විය හැක','Pedestrian light signals');
 add('light',SV(`<rect x="14" y="30" width="92" height="60" rx="8" fill="#222"/><circle cx="38" cy="60" r="16" fill="#e53935"/><circle cx="82" cy="60" r="16" fill="#4a2a2a"/>`),'මාරුවෙන් මාරුවට දැල්වෙන රතු ලාම්පු දෙක (දුම්රිය හරස් මාර්ග) – නවතින්න, ඉදිරියට නොයන්න','Alternately flashing red lights');
 
 // ROAD MARKINGS (top-down; you drive in the LEFT lane, upward)
 const ROAD=(s,extra='')=>SV(`<rect x="0" y="0" width="120" height="120" fill="#555"/>${s}<rect x="30" y="78" width="18" height="30" rx="5" fill="#d32f2f"/><rect x="33" y="82" width="12" height="7" fill="#fff" opacity=".8"/>${extra}`);
 const dash=(x,len=12,gap=10,c='#fff')=>{let s='';for(let y=-4;y<120;y+=len+gap)s+=`<rect x="${x-2}" y="${y}" width="4" height="${len}" fill="${c}"/>`;return s;};
 const cont=(x,c='#fff')=>`<rect x="${x-2}" y="0" width="4" height="120" fill="${c}"/>`;
-add('mark',ROAD(cont(60)),'තනි අඛණ්ඩ මැද රේඛාව – දකුණට හැරීමට හෝ හදිසි අනතුරක් වැළැක්වීමට පමණක් තරණය කළ හැක','Single continuous centre line');
-add('mark',ROAD(cont(56)+cont(64)),'ද්විත්ව අඛණ්ඩ මැද රේඛා – කිසිසේත් තරණය නොකළ යුතුය','Double continuous centre lines');
-add('mark',ROAD(dash(60)),'කැඩුණු මැද රේඛාව – ආරක්ෂිත නම් ඉස්සර කිරීමට/හැරීමට තරණය කළ හැක','Broken centre line');
-add('mark',ROAD(dash(56)+cont(64)),'ඔබේ පැත්තේ කැඩුණු රේඛාව – ආරක්ෂිත නම් ඔබට ඉස්සර කළ හැක','Broken line on your side');
-add('mark',ROAD(cont(56)+dash(64)),'ඔබේ පැත්තේ අඛණ්ඩ රේඛාව – ඔබට ඉස්සර කළ නොහැක','Continuous line on your side');
-add('mark',ROAD(dash(60,26,6)),'අනතුරු ඇඟවීමේ රේඛාව (දිගු කැබලි) – ඉදිරියේ අඛණ්ඩ රේඛාවක්; ප්‍රවේශමෙන්','Hazard warning line');
-add('mark',ROAD(dash(60)+cont(14,'#fdd835')),'තනි කහ දාර රේඛාව – වාහන නැවැත්වීම තහනම්/සීමිතයි','Single yellow edge line');
-add('mark',ROAD(dash(60)+cont(11,'#fdd835')+cont(18,'#fdd835')),'ද්විත්ව කහ දාර රේඛා – නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම්','Double yellow edge lines');
-add('mark',SV(`<rect width="120" height="120" fill="#555"/><rect x="0" y="35" width="120" height="50" fill="#666"/><rect x="35" y="0" width="50" height="120" fill="#666"/><rect x="35" y="35" width="50" height="50" fill="none" stroke="#fdd835" stroke-width="3"/>${[0,12,24,36,48,60,72,84].map(o=>`<line x1="${35+o}" y1="35" x2="35" y2="${35+o}" stroke="#fdd835" stroke-width="2"/><line x1="${85-o}" y1="85" x2="85" y2="${85-o}" stroke="#fdd835" stroke-width="2"/>`).join('')}`),'කහ කොටු හන්දිය – පිටවීම පැහැදිලි නම් පමණක් ඇතුළු වන්න (දකුණට හැරීම හැර)','Yellow box junction');
-add('mark',ROAD(dash(60)+[6,20,34,48,62,76,90,104].map(x=>`<rect x="${x}" y="40" width="9" height="26" fill="#fff"/>`).join('')),'පදික මාරුව (සීබ්‍රා) – පදිකයින්ට මග දෙන්න; පෙර 30 m / පසු 15 m නොනවත්වන්න','Pedestrian (zebra) crossing');
-add('mark',ROAD(dash(60)+'<rect x="4" y="56" width="54" height="7" fill="#fff"/>'+T('STOP',30,48,13,'#fff')),'නැවතුම් රේඛාව – නැවතිය යුතු විට මෙම රේඛාවෙන් ඔබ්බට නොයන්න','Stop line');
-add('mark',ROAD(dash(60)+[4,16,28,40,52].map(x=>`<rect x="${x}" y="58" width="7" height="5" fill="#fff"/>`).join('')+'<polygon points="18,32 42,32 30,50" fill="none" stroke="#fff" stroke-width="3"/>'),'මග දීමේ රේඛාව සහ ත්‍රිකෝණය – ප්‍රධාන මාර්ගයේ වාහනවලට මග දෙන්න','Give way line');
-add('mark',SV(`<rect width="120" height="120" fill="#555"/><rect x="48" y="0" width="24" height="120" fill="none" stroke="#fff" stroke-width="3"/>${[0,14,28,42,56,70,84,98,112].map(y=>`<line x1="48" y1="${y+14}" x2="72" y2="${y}" stroke="#fff" stroke-width="3"/>`).join('')}<rect x="30" y="78" width="14" height="28" rx="4" fill="#d32f2f"/>`),'ඉරි ඇඳි (hatched) ප්‍රදේශය – ආරක්ෂිත නම් පමණක් ඇතුළු වන්න','Hatched area');
-add('mark',ROAD(dash(60)+`<path d="M30 60 V30 M22 40 L30 28 L38 40" stroke="#fff" stroke-width="5" fill="none"/>`),'මංතීරු ඊතල – ඔබේ මංතීරුවේ ඊතලය අනුගමනය කිරීම අනිවාර්යයි','Lane arrows');
+add('mark',ROAD(cont(60)),'තනි අඛණ්ඩ මැද රේඛාව – දකුණට හැරවීමට හෝ හදිසි අනතුරක් වළක්වා ගැනීමට පමණක් හරහා යා හැක','Single continuous centre line');
+add('mark',ROAD(cont(56)+cont(64)),'ද්විත්ව අඛණ්ඩ මැද රේඛා – කිසි විටෙකත් හරහා නොයා යුතුය','Double continuous centre lines');
+add('mark',ROAD(dash(60)),'කැඩුණු මැද රේඛාව – ආරක්ෂිත නම් ඉස්සර කිරීමට හෝ හැරවීමට හරහා යා හැක','Broken centre line');
+add('mark',ROAD(dash(56)+cont(64)),'ඔබේ පසින් කැඩුණු රේඛාව – ආරක්ෂිත නම් ඔබට ඉස්සර කළ හැක','Broken line on your side');
+add('mark',ROAD(cont(56)+dash(64)),'ඔබේ පසින් අඛණ්ඩ රේඛාව – ඔබට ඉස්සර කළ නොහැක','Continuous line on your side');
+add('mark',ROAD(dash(60,26,6)),'අනතුරු හැඟවීමේ රේඛාව (දිගු කැබලි) – ඉදිරියේ අඛණ්ඩ රේඛාවක් ඇති බැවින් ප්‍රවේශම් වන්න','Hazard warning line');
+add('mark',ROAD(dash(60)+cont(14,'#fdd835')),'තනි කහ දාර රේඛාව – වාහන නැවැත්වීම තහනම් හෝ සීමිතය','Single yellow edge line');
+add('mark',ROAD(dash(60)+cont(11,'#fdd835')+cont(18,'#fdd835')),'ද්විත්ව කහ දාර රේඛා – වාහන නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම්','Double yellow edge lines');
+add('mark',SV(`<rect width="120" height="120" fill="#555"/><rect x="0" y="35" width="120" height="50" fill="#666"/><rect x="35" y="0" width="50" height="120" fill="#666"/><rect x="35" y="35" width="50" height="50" fill="none" stroke="#fdd835" stroke-width="3"/>${[0,12,24,36,48,60,72,84].map(o=>`<line x1="${35+o}" y1="35" x2="35" y2="${35+o}" stroke="#fdd835" stroke-width="2"/><line x1="${85-o}" y1="85" x2="85" y2="${85-o}" stroke="#fdd835" stroke-width="2"/>`).join('')}`),'කහ මංසන්ධි කොටුව – පිටවීම පැහැදිලි නම් පමණක් ඇතුල් වන්න (දකුණට හැරවීම හැර)','Yellow box junction');
+add('mark',ROAD(dash(60)+[6,20,34,48,62,76,90,104].map(x=>`<rect x="${x}" y="40" width="9" height="26" fill="#fff"/>`).join('')),'පදික මාරුව (සීබ්‍රා) – පදිකයින්ට මාර්ගය ඉඩ දෙන්න; පෙර 30 m සහ පසු 15 m ඇතුළත වාහන නොනවත්වන්න','Pedestrian (zebra) crossing');
+add('mark',ROAD(dash(60)+'<rect x="4" y="56" width="54" height="7" fill="#fff"/>'+T('STOP',30,48,13,'#fff')),'නැවතුම් රේඛාව – නැවැත්විය යුතු විට මෙම රේඛාව පසු කර ඉදිරියට නොයන්න','Stop line');
+add('mark',ROAD(dash(60)+[4,16,28,40,52].map(x=>`<rect x="${x}" y="58" width="7" height="5" fill="#fff"/>`).join('')+'<polygon points="18,32 42,32 30,50" fill="none" stroke="#fff" stroke-width="3"/>'),'මාර්ගය ඉඩ දීමේ රේඛාව සහ ත්‍රිකෝණය – ප්‍රධාන මාර්ගයේ වාහනවලට ඉඩ දෙන්න','Give way line');
+add('mark',SV(`<rect width="120" height="120" fill="#555"/><rect x="48" y="0" width="24" height="120" fill="none" stroke="#fff" stroke-width="3"/>${[0,14,28,42,56,70,84,98,112].map(y=>`<line x1="48" y1="${y+14}" x2="72" y2="${y}" stroke="#fff" stroke-width="3"/>`).join('')}<rect x="30" y="78" width="14" height="28" rx="4" fill="#d32f2f"/>`),'ඉරි ඇඳි (hatched) ප්‍රදේශය – ආරක්ෂිත නම් පමණක් ඇතුල් වන්න','Hatched area');
+add('mark',ROAD(dash(60)+`<path d="M30 60 V30 M22 40 L30 28 L38 40" stroke="#fff" stroke-width="5" fill="none"/>`),'මංතීරු ඊතල – ඔබේ මංතීරුවේ ඊතලය අනුගමනය කිරීම අනිවාර්ය වේ','Lane arrows');
 
 const GROUPS={
- warn:['අනතුරු ඇඟවීමේ සංඥා','කහ දියමන්ති හැඩය, කළු දාරය සහ සංකේතය – ඉදිරියේ ඇති අනතුරක් ගැන අනතුරු අඟවයි.'],
+ warn:['අනතුරු හැඟවීමේ සංඥා','කහ දියමන්ති හැඩය, කළු දාරය සහ සංකේතය – ඉදිරියේ ඇති අනතුරක් පිළිබඳව අනතුරු හඟවයි.'],
  proh:['තහනම් සංඥා','සුදු රවුම, රතු වළල්ල – යමක් තහනම් බව දක්වයි.'],
- park:['නැවැත්වීම් සංඥා','නිල් රවුම, රතු වළල්ල – සංඥාවේ සිට ඊළඟ හන්දිය දක්වා බලපායි.'],
- rest:['සීමා කිරීමේ සංඥා','රතු වළල්ල තුළ අංක – වේගය, පළල, උස, බර සීමා.'],
- mand:['අනිවාර්ය සංඥා','රතු වළල්ල, කළු ඊතලය, රතු ඇල තීරුවක් නැත – අනිවාර්යයෙන් කළ යුතු දේ.'],
- prio:['ප්‍රමුඛතා සංඥා','හන්දි සහ පටු ස්ථානවල කාටද ප්‍රමුඛතාව යන්න.'],
+ park:['නැවැත්වීම් සංඥා','නිල් රවුම, රතු වළල්ල – සංඥාවේ සිට ඊළඟ මංසන්ධිය දක්වා බලපායි.'],
+ rest:['සීමාකාරී සංඥා','රතු වළල්ල තුළ අංක – වේගය, පළල, උස, බර සීමා.'],
+ mand:['අනිවාර්ය සංඥා','රතු වළල්ල, කළු ඊතලය, රතු ඇල තීරුවක් නැත – අනිවාර්යයෙන් කළ යුතු දේ දක්වයි.'],
+ prio:['ප්‍රමුඛතා සංඥා','මංසන්ධි සහ පටු ස්ථානවල ප්‍රමුඛතාව හිමි වන්නේ කාටද යන්න දක්වයි.'],
  info:['තොරතුරු සංඥා','සෘජුකෝණාස්‍ර – පහසුකම් සහ දිශා තොරතුරු.'],
- light:['සංඥා ලාම්පු','රථවාහන සහ පදික සංඥා ලාම්පු.'],
- mark:['මාර්ග සලකුණු','රතු කාරය = ඔබ (වම් මංතීරුවේ ඉදිරියට යයි).']
+ light:['රථ වාහන ආලෝක සංඥා','රථවාහන සහ පදික සංඥා ලාම්පු.'],
+ mark:['මාර්ග සලකුණු','රතු මෝටර් රථය = ඔබ (වම් මංතීරුවේ ඉදිරියට ගමන් කරයි).']
 };
 
 // ================= WRITTEN QUESTIONS (correct answer first; shuffled at runtime) =================
 const WQ=[
 // --- markings
-['mark','තනි අඛණ්ඩ සුදු මැද රේඛාවක් තරණය කළ හැක්කේ කවදාද?',['දකුණට හැරීමට හෝ හදිසි අනතුරක් වැළැක්වීමට පමණි','මාර්ගය පැහැදිලි නම් ඉස්සර කිරීමට','කිසිම අවස්ථාවක නොහැක','ඉදිරියෙන් වාහන නොමැති ඕනෑම විටෙක'],'තනි අඛණ්ඩ රේඛාව හරහා ඉස්සර කිරීම තහනම්. දකුණට හැරීමට හෝ හදිසි අනතුරක් වැළැක්වීමට පමණක් තරණය කළ හැක.'],
-['mark','මැද ද්විත්ව අඛණ්ඩ සුදු රේඛා ඇති විට දකුණට හැරීමට අවශ්‍ය රියදුරෙක් කළ යුත්තේ?',['රේඛා තරණය නොකර වෙනත් මාර්ගයක් සොයා ගත යුතුය','සංඥා කර ප්‍රවේශමෙන් තරණය කළ හැක','රාත්‍රියේ පමණක් තරණය කළ හැක','මාර්ගය පැහැදිලි නම් තරණය කළ හැක'],'ද්විත්ව අඛණ්ඩ රේඛා දකුණට හැරීමටත් තරණය නොකළ යුතුය. හදිසි අනතුරක් වැළැක්වීමට පමණක් ව්‍යතිරේකයකි.'],
-['mark','මැද රේඛාවේ ඔබේ පැත්තේ කැඩුණු රේඛාවක් ද අනෙක් පැත්තේ අඛණ්ඩ රේඛාවක් ද ඇත. ඔබට කළ හැක්කේ?',['ආරක්ෂිත නම් ඉස්සර කළ හැක – ඔබට ළඟම ඇති රේඛාව තීරණය කරයි','ඉස්සර කළ නොහැක','ඉදිරියෙන් එන වාහනවලට පමණක් ඉස්සර කළ හැක','නවතා බලා සිටිය යුතුය'],'මිශ්‍ර රේඛාවලදී ඔබේ පැත්තේ රේඛාව තීරණය කරයි: කැඩුණු නම් ඉස්සර කළ හැක, අඛණ්ඩ නම් නොහැක.'],
-['mark','කහ කොටු හන්දියක් පිළිබඳ නිවැරදි ප්‍රකාශය කුමක්ද?',['දකුණට හැරීම හැර, පිටවීමේ මාර්ගය අවහිර නම් කොටුවට ඇතුළු නොවිය යුතුය','කෙළින් යන්නේ නම් කොටුවට ඇතුළු විය හැක','කොළ ලාම්පුව දැල්වෙන විට සෑම විටම ඇතුළු විය හැක','දකුණට හැරීම හැර, කොටුව තුළ නැවතිය හැක'],'පිටවීම පැහැදිලි නම් පමණක් ඇතුළු වන්න. දකුණට හැරෙන වාහනයක් පමණක් එලෙස හැරෙන අනෙක් වාහන නිසා කොටුව තුළ රැඳී සිටිය හැක.'],
-['mark','කෙළින් යාමට ඔබේ ලාම්පුව කොළ වුවද, හන්දියෙන් එහා මාර්ගයේ වාහන පෝලිම කහ කොටුව දක්වා ඇත. ඔබ කළ යුත්තේ?',['නොනවතා කොටුව පසු කළ හැකි වන තුරු කොටුවට පිටතින් රැඳී සිටින්න','කොළ නිසා කොටුවට ඇතුළු වන්න','නළාව නාද කර ඇතුළු වන්න','කොටුවේ අඩක් දක්වා යන්න'],'කොළ ලාම්පුවක් අවහිර වූ පිටවීමක් අභිබවා නොයයි.'],
-['mark','පදික මාරුවක් අසල වාහනයක් නැවැත්වීම තහනම් වන්නේ?',['මාරුවට පෙර මීටර් 30 සහ පසු මීටර් 15 ඇතුළත','දෙපසින්ම මීටර් 10 ඇතුළත','පෙර මීටර් 50 ඇතුළත පමණි','එම මාර්ගයේ ඕනෑම තැනක'],'පදික මාරුව මත, එයට පෙර 30 m සහ පසු 15 m ඇතුළත නැවැත්වීම තහනම්.'],
-['mark','බස් නැවතුම් ස්ථානයක් අසල වාහන නැවැත්වීම තහනම් දුර කුමක්ද?',['ළඟා වන පැත්තේ මීටර් 30 සහ පිටවන පැත්තේ මීටර් 15','දෙපසින්ම මීටර් 5','මීටර් 100','මීටර් 50 සහ 50'],'බස් නැවතුම: පෙර 30 m / පසු 15 m – පදික මාරුවට සමානයි.'],
-['mark','ප්‍රධාන මාර්ග හන්දියක සිට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම්ද?',['මීටර් 25','මීටර් 10','මීටර් 5','මීටර් 100'],'ප්‍රධාන මාර්ග හන්දිය 25 m · සුළු මාර්ග හන්දිය 10 m.'],
-['mark','සුළු මාර්ග හන්දියක සිට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම්ද?',['මීටර් 10','මීටර් 25','මීටර් 50','මීටර් 2'],'සුළු මාර්ග හන්දිය 10 m.'],
-['mark','සංඥා ලාම්පු සහිත හන්දියකට ළඟා වන විට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම් විය හැකිද?',['මීටර් 50','මීටර් 10','මීටර් 15','මීටර් 5'],'සංඥා ලාම්පු සහිත හන්දියකට පෙර 50 m.'],
-['mark','මාර්ග දාරයේ තනි කහ රේඛාවකින් අදහස් වන්නේ?',['එම පැත්තේ වාහන නැවැත්වීම තහනම් හෝ සීමිත බව','සෑම විටම නතර කිරීම, පැටවීම තහනම් බව','බයිසිකල් මංතීරුව','මාර්ගයේ දාරය පමණි'],'තනි කහ = නැවැත්වීම තහනම්/සීමිත. ද්විත්ව කහ = පැටවීම, බෑම සහ නතර කිරීමද තහනම්.'],
-['mark','මාර්ග දාරයේ ද්විත්ව කහ රේඛාවලින් අදහස් වන්නේ?',['නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම් හෝ සීමිත බව','නැවැත්වීම පමණක් තහනම් බව','ද්වි-මාර්ග ගමනාගමනය','මෝටර් සයිකල් නැවැත්වීමට පමණි'],'ද්විත්ව කහ වඩා දැඩියි.'],
-['mark','කැබලි දිගු ද පරතර කෙටි ද වූ කැඩුණු මැද රේඛාවක් (අනතුරු ඇඟවීමේ රේඛාව) දකින විට?',['ඉදිරියේ අඛණ්ඩ රේඛාවක්/අනතුරක් ඇත – ඉතා ප්‍රවේශමෙන් පමණක් තරණය කරන්න','නිදහසේ ඉස්සර කළ හැක','ඉදිරියේ බස් මංතීරුවක්','නැවැත්වීමට අවසර ඇත'],'අනතුරු ඇඟවීමේ රේඛාව අඛණ්ඩ රේඛාවකට අවම 50 m කට පෙර ඇඳ ඇත.'],
-['mark','මාර්ගයේ ලියා ඇති (පින්තාරු කළ) වේග සීමාවක නෛතික බලය කුමක්ද?',['සංඥා පුවරුවකට සමාන නෛතික බලයක් ඇත','උපදෙසක් පමණි','රාත්‍රියේ පමණක් බලපායි','බර වාහනවලට පමණි'],'පින්තාරු කළ වේග සීමාවලට සංඥා පුවරුවට සමාන බලයක් ඇත.'],
-['mark','පදික මාරුවක් ඇති විට, පදිකයෙකුට එයින් කොපමණ දුරක් ඇතුළත වෙනත් තැනකින් මාර්ගය හරස් කළ නොහැකිද?',['මීටර් 50','මීටර් 10','මීටර් 100','සීමාවක් නැත'],'පදික මාරුවකින් 50 m ඇතුළත වෙනත් තැනකින් මාරු නොවිය යුතුය.'],
+['mark','තනි අඛණ්ඩ සුදු මැද රේඛාවක් හරහා ගමන් කළ හැක්කේ කවදාද?',['දකුණට හැරවීමට හෝ හදිසි අනතුරක් වළක්වා ගැනීමට පමණි','මාර්ගය පැහැදිලි නම් වෙනත් වාහනයක් ඉස්සර කිරීමට','කිසිදු අවස්ථාවක හරහා ගමන් කළ නොහැක','ඉදිරියෙන් වාහන නොමැති ඕනෑම අවස්ථාවක'],'තනි අඛණ්ඩ රේඛාව හරහා ඉස්සර කිරීම තහනම් වේ. දකුණට හැරවීමට හෝ හදිසි අනතුරක් වළක්වා ගැනීමට පමණක් එය හරහා ගමන් කළ හැක.'],
+['mark','මාර්ගය මැද ද්විත්ව අඛණ්ඩ සුදු රේඛා ඇති විට දකුණට හැරවීමට අවශ්‍ය රියදුරෙකු කළ යුත්තේ කුමක්ද?',['රේඛා හරහා නොගොස් වෙනත් මාර්ගයක් සොයා ගත යුතුය','සංඥා ලබා දී ප්‍රවේශමෙන් රේඛා හරහා යා හැක','රාත්‍රී කාලයේදී පමණක් රේඛා හරහා යා හැක','මාර්ගය පැහැදිලි නම් රේඛා හරහා යා හැක'],'දකුණට හැරවීමට පවා ද්විත්ව අඛණ්ඩ රේඛා හරහා නොයා යුතුය. හදිසි අනතුරක් වළක්වා ගැනීමට පමණක් විශේෂ අවසරයක් ඇත.'],
+['mark','මැද රේඛාවේ ඔබේ පසින් කැඩුණු රේඛාවක් ද අනෙක් පසින් අඛණ්ඩ රේඛාවක් ද ඇති විට ඔබට කළ හැක්කේ කුමක්ද?',['ආරක්ෂිත නම් ඉස්සර කළ හැක – ඔබට ආසන්නම රේඛාව අනුව තීරණය වේ','ඉස්සර කළ නොහැක','ඉදිරියෙන් එන වාහනවලට පමණක් ඉස්සර කළ හැක','වාහනය නවතා බලා සිටිය යුතුය'],'මිශ්‍ර රේඛාවලදී ඔබේ පස ඇති රේඛාව අනුව තීරණය වේ: කැඩුණු රේඛාවක් නම් ඉස්සර කළ හැක; අඛණ්ඩ රේඛාවක් නම් නොහැක.'],
+['mark','කහ මංසන්ධි කොටුවක් පිළිබඳ නිවැරදි ප්‍රකාශය කුමක්ද?',['දකුණට හැරවීම හැර, පිටවීමේ මාර්ගය අවහිර නම් කොටුවට ඇතුල් නොවිය යුතුය','කෙළින් ඉදිරියට යන්නේ නම් කොටුවට ඇතුල් විය හැක','කොළ ලාම්පුව දැල්වෙන විට සෑම විටම කොටුවට ඇතුල් විය හැක','දකුණට හැරවීම හැර, කොටුව තුළ වාහනය නැවැත්විය හැක'],'පිටවීම පැහැදිලි නම් පමණක් ඇතුල් වන්න. දකුණට හැරෙන වාහනයකට පමණක් එලෙස හැරෙන අනෙකුත් වාහන නිසා කොටුව තුළ රැඳී සිටිය හැක.'],
+['mark','කෙළින් යාමට ඔබේ ආලෝක සංඥාව කොළ වුවද, මංසන්ධියෙන් එහා මාර්ගයේ වාහන පෝලිම කහ කොටුව දක්වාම පවතී. ඔබ කළ යුත්තේ කුමක්ද?',['නොනවතා කොටුව පසු කළ හැකි වන තුරු කොටුවෙන් පිටත රැඳී සිටින්න','කොළ ලාම්පුව දැල්වෙන නිසා කොටුවට ඇතුල් වන්න','නළාව නාද කරමින් කොටුවට ඇතුල් වන්න','කොටුවේ අඩක් දක්වා ඉදිරියට ගමන් කරන්න'],'කොළ ලාම්පුව දැල්වුණද, අවහිර වූ පිටවීමක් සහිත කොටුවකට ඇතුල් වීමට අවසර නැත.'],
+['mark','පදික මාරුවක් අසල වාහනයක් නැවැත්වීම තහනම් වන්නේ කුමන සීමාවක් තුළද?',['පදික මාරුවට පෙර මීටර් 30 සහ පසු මීටර් 15 ඇතුළත','දෙපසින්ම මීටර් 10 ඇතුළත','පෙර මීටර් 50 ඇතුළත පමණි','එම මාර්ගයේ ඕනෑම ස්ථානයක'],'පදික මාරුව මත මෙන්ම, එයට පෙර 30 m සහ පසු 15 m ඇතුළත වාහන නැවැත්වීම තහනම් වේ.'],
+['mark','බස් නැවතුමක් අසල වාහන නැවැත්වීම තහනම් දුර ප්‍රමාණය කුමක්ද?',['ළඟා වන පසින් මීටර් 30 සහ පිටවන පසින් මීටර් 15','දෙපසින්ම මීටර් 5','මීටර් 100','දෙපසින්ම මීටර් 50'],'බස් නැවතුම: පෙර 30 m සහ පසු 15 m – පදික මාරුවට සමාන වේ.'],
+['mark','ප්‍රධාන මාර්ග මංසන්ධියක සිට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම්ද?',['මීටර් 25','මීටර් 10','මීටර් 5','මීටර් 100'],'ප්‍රධාන මාර්ග මංසන්ධිය 25 m · සුළු මාර්ග මංසන්ධිය 10 m.'],
+['mark','සුළු මාර්ග මංසන්ධියක සිට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම්ද?',['මීටර් 10','මීටර් 25','මීටර් 50','මීටර් 2'],'සුළු මාර්ග මංසන්ධිය 10 m.'],
+['mark','රථ වාහන ආලෝක සංඥා සහිත මංසන්ධියකට ළඟා වන විට කොපමණ දුරක් ඇතුළත වාහන නැවැත්වීම තහනම් විය හැකිද?',['මීටර් 50','මීටර් 10','මීටර් 15','මීටර් 5'],'රථ වාහන ආලෝක සංඥා සහිත මංසන්ධියකට පෙර 50 m.'],
+['mark','මාර්ග දාරයේ තනි කහ රේඛාවකින් අදහස් වන්නේ කුමක්ද?',['එම පසින් වාහන නැවැත්වීම තහනම් හෝ සීමිත බව','සෑම විටම නතර කිරීම සහ පැටවීම තහනම් බව','එය පාපැදි මංතීරුවක් බව','එය මාර්ගයේ දාරය පමණක් දක්වන බව'],'තනි කහ රේඛාව = වාහන නැවැත්වීම තහනම්/සීමිතය. ද්විත්ව කහ රේඛාව = පැටවීම, බෑම සහ නතර කිරීමද තහනම් වේ.'],
+['mark','මාර්ග දාරයේ ද්විත්ව කහ රේඛාවලින් අදහස් වන්නේ කුමක්ද?',['වාහන නැවැත්වීම, පැටවීම/බෑම සහ නතර කිරීම තහනම් හෝ සීමිත බව','වාහන නැවැත්වීම පමණක් තහනම් බව','ද්වි-මාර්ග ගමනාගමනය පවතින බව','මෝටර් සයිකල් නැවැත්වීමට පමණක් අවසර ඇති බව'],'ද්විත්ව කහ රේඛාවල නීතිය තනි කහ රේඛාවට වඩා දැඩි වේ.'],
+['mark','පරතර කෙටි, දිගු කැබලි සහිත කැඩුණු මැද රේඛාවක් (අනතුරු හැඟවීමේ රේඛාව) දුටු විට ඉන් හැඟවෙන්නේ කුමක්ද?',['ඉදිරියේ අඛණ්ඩ රේඛාවක්/අනතුරක් ඇති බැවින් ඉතා ප්‍රවේශමෙන් පමණක් හරහා යා යුතු බව','නිදහසේ ඉස්සර කළ හැකි බව','ඉදිරියේ බස් මංතීරුවක් ඇති බව','එම ස්ථානයේ වාහන නැවැත්වීමට අවසර ඇති බව'],'අනතුරු හැඟවීමේ රේඛාව අඛණ්ඩ රේඛාවකට අවම වශයෙන් 50 m කට පෙර ඇඳ ඇත.'],
+['mark','මාර්ගය මත සටහන් කර (පින්තාරු කර) ඇති වේග සීමාවක නෛතික බලය කුමක්ද?',['සංඥා පුවරුවකට සමාන නෛතික බලයක් ඇත','එය උපදෙසක් පමණක් වේ','රාත්‍රී කාලයේදී පමණක් බලපායි','බර වාහන සඳහා පමණක් බලපායි'],'මාර්ගයේ පින්තාරු කර ඇති වේග සීමාවලට ද සංඥා පුවරුවකට සමාන නෛතික බලයක් ඇත.'],
+['mark','පදික මාරුවක් ඇති විට, පදිකයෙකුට එයින් කොපමණ දුරක් ඇතුළත වෙනත් ස්ථානයකින් මාර්ගය මාරු විය නොහැකිද?',['මීටර් 50','මීටර් 10','මීටර් 100','සීමාවක් නැත'],'පදික මාරුවකින් 50 m ඇතුළත වෙනත් ස්ථානයකින් මාර්ගය මාරු නොවිය යුතුය.'],
 // --- rules
-['rule','නාගරික (ගොඩනැගිලි සහිත) ප්‍රදේශයක වේග සීමා කට්ටලය කුමක්ද?',['මෝටර් සයිකල්, කාර්, ද්විත්ව කාර්ය 50 · ලොරි 50 · ත්‍රිරෝද 40','කාර් 70 · ලොරි 60 · ත්‍රිරෝද 40','කාර් 60 · ලොරි 50 · ත්‍රිරෝද 50','කාර් 50 · ලොරි 40 · ත්‍රිරෝද 30'],'නාගරික: කාර්/යතුරුපැදි 50, බස්/ලොරි 50, ත්‍රිරෝද/ට්‍රැක්ටර් 40.'],
-['rule','නාගරික නොවන මාර්ගයක මෝටර් කාරයක සාමාන්‍ය උපරිම වේගය?',['පැයට කි.මී. 70','පැයට කි.මී. 50','පැයට කි.මී. 60','පැයට කි.මී. 80'],'කාර්, ද්විත්ව කාර්ය, මෝටර් සයිකල් – නාගරික නොවන 70.'],
-['rule','නාගරික නොවන මාර්ගයක බස් රථයක හෝ ලොරියක උපරිම වේගය?',['පැයට කි.මී. 60','පැයට කි.මී. 70','පැයට කි.මී. 50','පැයට කි.මී. 80'],'බස්/ලොරි – නාගරික 50, නාගරික නොවන 60.'],
-['rule','ත්‍රිරෝද රථයක උපරිම වේගය කුමක්ද?',['සෑම ප්‍රදේශයකම පැයට කි.මී. 40','නාගරික 40, නාගරික නොවන 60','පැයට කි.මී. 50','පැයට කි.මී. 70'],'ත්‍රිරෝද රථ සහ ට්‍රැක්ටර් – සෑම තැනම 40.'],
-['rule','ශ්‍රී ලංකාවේ අධිවේගී මාර්ගයක මෝටර් කාරයක උපරිම වේගය?',['පැයට කි.මී. 100','පැයට කි.මී. 80','පැයට කි.මී. 120','පැයට කි.මී. 110'],'අධිවේගී මාර්ගයේ උපරිමය 100. ඇතුළු/පිටවීමේ මාර්ග (ramps) 60.'],
-['rule','අධිවේගී මාර්ගයේ ඇතුළු/පිටවීමේ මාර්ගයක (ramp) වේග සීමාව?',['පැයට කි.මී. 60','පැයට කි.මී. 40','පැයට කි.මී. 80','පැයට කි.මී. 100'],'Ramp වේග සීමාව 60.'],
-['rule','පහත සඳහන් කුමන වාහනයට අධිවේගී මාර්ගය භාවිතා කිරීම තහනම් නොවේද?',['ලොරි','ත්‍රිරෝද රථ','මෝටර් සයිකල්','ට්‍රැක්ටර් (ඉඩම් වාහන)'],'අධිවේගී මාර්ගයේ පදිකයින්, ත්‍රිරෝද, මෝටර් සයිකල්, ට්‍රැක්ටර්, බයිසිකල් තහනම්. ලොරිවලට අවසර ඇත.'],
-['rule','පාලනයක් නැති හන්දියකට කාර් දෙකක් එකවර පැමිණේ. නැවතී සිටිය යුත්තේ කුමන කාරයද?',['අනෙක් කාරය තමාගේ දකුණු පසින් ඇති කාරය','වේගවත් කාරය','බර වැඩි කාරය','පසුව නළාව නාද කළ කාරය'],'පාලනයක් නැති හන්දියකදී දකුණු පසින් එන වාහනයට මග දිය යුතුය.'],
-['rule','ශ්‍රී ලංකාවේ වටරවුමකට ඇතුළු වන විට නීතිය කුමක්ද?',['දක්ෂිණාවර්තව යන්න; දැනටමත් වටරවුමේ දකුණු පසින් එන වාහනවලට මග දෙන්න','වාමාවර්තව ගොස් වමෙන් එන අයට මග දෙන්න','ඇතුළු වන වාහනවලට ප්‍රමුඛතාව','විශාල වාහනවලට සෑම විටම ප්‍රමුඛතාව'],'මැද දූපත ඔබේ දකුණු පසින් තබා දක්ෂිණාවර්තව යන්න.'],
-['rule','රථවාහන ලාම්පුවේ කහ පමණක් දැල්වේ. ඊළඟට දැල්වෙන්නේ?',['රතු','කොළ','රතු සහ කහ එකට','දැල්වෙන කහ'],'අනුපිළිවෙල: රතු → රතු+කහ → කොළ → කහ → රතු.'],
-['rule','රතු සහ කහ ලාම්පු එකට දැල්වෙන විට?',['තවමත් නැවතුම් රේඛාවෙන් ඔබ්බට නොයා සිටින්න – ඊළඟට කොළ වේ','ඉක්මනින් ඉදිරියට යන්න','වේගය අඩු කර ඉදිරියට යන්න','වමට හැරීමට පමණක් යා හැක'],'රතු+කහ එකට = කොළ වීමට ආසන්නයි, නමුත් තවම නොයන්න.'],
-['rule','ඔබේ ලාම්පුව කොළ වුවද රථවාහන මෙහෙයවන පොලිස් නිලධාරියෙක් නවතින්න සංඥා කරයි. ඔබ කළ යුත්තේ?',['නවතින්න – රථවාහන මෙහෙයවන නිලධාරියාගේ නියෝගය ලාම්පුවලට වඩා ඉහළයි','ඉදිරියට යන්න – කොළ සෑම විටම ඉහළයි','නළාව නාද කර සෙමින් යන්න','නැවතුම් රේඛාවක් ඇත්නම් පමණක් නවතින්න'],'පාලන පිළිවෙල: පොලිස් නිලධාරී > ලාම්පු > සංඥා/සලකුණු > සාමාන්‍ය නීති.'],
-['rule','දෙමංතීරු මාර්ගයක වම් පසින් ඉස්සර කිරීම නීත්‍යනුකූල වන්නේ කවදාද?',['ඉදිරි වාහනය දකුණට හැරීමට සංඥා කර මාර්ගයේ මැදට ගිය විට','ඉදිරි වාහනය සෙමින් යන විට','වම් පස මාර්ග කරේ ඉඩ ඇති විට','දකුණු පස ඉදිරියෙන් එන වාහනවලින් අවහිර වූ විට'],'සාමාන්‍යයෙන් දකුණු පසින් ඉස්සර කළ යුතුය. මාර්ග කරෙන් හෝ පදික වේදිකාවෙන් කිසිදා ඉස්සර නොකරන්න.'],
-['rule','සාමාන්‍යයෙන් ඉස්සර කළ යුත්තේ කුමන පසින්ද?',['දකුණු පසින්','වම් පසින්','ඉඩ ඇති ඕනෑම පසකින්','මාර්ග කරෙන්'],'නීතිය අනුව ඉස්සර කළ යුත්තේ දකුණු (offside) පසින්.'],
-['rule','ඉස්සර කිරීමෙන් පසු නැවත වම් මංතීරුවට පැමිණිය යුත්තේ කවදාද?',['ඉස්සර කළ වාහනයේ ඉදිරිපස අභ්‍යන්තර කැඩපතේ පෙනෙන විට','එය පසු කළ සැණින්','මීටර් 5ක් ඉදිරියට ගිය පසු','නළාව නාද කළ පසු'],'පසු කළ වාහනය අභ්‍යන්තර කැඩපතේ පෙනෙන තුරු රැඳී, වමට සංඥා කර ආපසු එන්න.'],
-['rule','ඉස්සර කිරීම තහනම් ස්ථාන මොනවාද?',['වංගු, කඳු මුදුන්, හන්දි, පදික මාරු, දුම්රිය හරස් මාර්ග සහ පටු පාලම්','කෙළින් පළල් මාර්ග','කැඩුණු මැද රේඛා සහිත මාර්ග','අධිවේගී මාර්ගවල'],'ඉදිරිය පැහැදිලිව නොපෙනෙන හෝ අනතුරුදායක ස්ථානවල ඉස්සර කිරීම තහනම්.'],
-['rule','සංඥා නැති පටු, බෑවුම් සහිත කඳු මාර්ගයක වාහන දෙකක් හමු වේ. සාමාන්‍යයෙන් මුලින් යා යුත්තේ?',['කන්ද නගින වාහනය','කන්දෙන් බසින වාහනය','විශාල වාහනය','පළමුව ලයිට් දැල්වූ වාහනය'],'නගින වාහනය නැවැත්වුවහොත් බෑවුමේ නැවත පණගැන්වීම අපහසුයි. බසින වාහනය මග දෙයි.'],
-['rule','නළාව භාවිතා කළ හැක්කේ කුමන අවස්ථාවලදීද?',['අනතුරක් වැළැක්වීමට හෝ ඉස්සර කිරීමේ අදහස දැන්වීමට පමණි','ඕනෑම විටෙක','රාත්‍රියේ පමණි','පදිකයින් ඉවත් කිරීමට නිතර'],'දිගු හෝ ආක්‍රමණශීලී නළා භාවිතය වරදකි. බහු-ස්වර නළා තහනම්.'],
-['rule','රිය පදවන විට ජංගම දුරකථන භාවිතය පිළිබඳ නීතිය?',['රිය පදවන විට කිසිදු ජංගම සන්නිවේදන උපකරණයක් භාවිතා නොකළ යුතුය','පෝලිමේ නැවතී ඇති විට භාවිතා කළ හැක','කෙටි පණිවිඩ පමණක් තහනම්','විනාඩියකට අඩු ඇමතුම් කළ හැක'],'රිය පදවන විට දුරකථනය කිසිසේත් භාවිතා නොකරන්න.'],
-['rule','ආදායම් බලපත්‍රය (Revenue licence) ප්‍රදර්ශනය කළ යුත්තේ කොහේද?',['වාහනයේ ඉදිරිපස වම් පැත්තේ','පිටුපස වීදුරුවේ','ලාච්චුව තුළ','වාහනය තුළ ඕනෑම තැනක'],'ආදායම් බලපත්‍රය ඉදිරිපස වම් (near) පැත්තේ ප්‍රදර්ශනය කළ යුතුය.'],
-['rule','පුද්ගලික මෝටර් කාරයක රැගෙන යා යුතු ලේඛන මොනවාද?',['රියදුරු බලපත්‍රය, රක්ෂණ සහතිකය, ආදායම් බලපත්‍රය, දුම් පරීක්ෂණ සහතිකය','උප්පැන්න සහතිකය සහ ජාතික හැඳුනුම්පත පමණි','වාහනයේ ලියාපදිංචි සහතිකයේ මුල් පිටපත පමණි','කිසිවක් අවශ්‍ය නැත'],'පොලිස් නිලධාරියෙක් ඉල්ලූ විගස රියදුරු බලපත්‍රය ඉදිරිපත් කළ යුතුය.'],
-['rule','මෝටර් වාහනයක් සඳහා අවම වශයෙන් තිබිය යුතු රක්ෂණය?',['තෙවන පාර්ශ්ව රක්ෂණය','පූර්ණ (comprehensive) රක්ෂණය','රක්ෂණය අවශ්‍ය නැත','රියදුරුගේ ජීවිත රක්ෂණය පමණි'],'අවම වශයෙන් තෙවන පාර්ශ්ව රක්ෂණය අනිවාර්යයි.'],
-['rule','මත්පැන් හෝ මත්ද්‍රව්‍ය පානය කළ රියදුරෙකුට සිදුවන ප්‍රධාන බලපෑම?',['අනතුරකට ප්‍රතික්‍රියා කිරීමට ගතවන කාලය වැඩි වේ','ප්‍රතික්‍රියා කාලය අඩු වේ','දුර නිවැරදිව තක්සේරු කිරීම වැඩි දියුණු වේ','රාත්‍රී පෙනීම තියුණු වේ'],'මත්පැන් විනිශ්චය සහ ප්‍රතික්‍රියා අඩපණ කරයි. ආරක්ෂිතම නීතිය – පානය කර රිය නොපදවන්න.'],
-['rule','ඔබේ වාහනයෙන් පදිකයෙකු තුවාල වී සිහිසුන් වී ඇත. නීතිය අනුව කළ යුත්තේ?',['නවතා, තුවාලකරු වහාම රෝහලට ගෙන ගොස් ළඟම පොලිසියට වහාම දැනුම් දෙන්න','පිටව ගොස් පැය 48 ඇතුළත දැනුම් දෙන්න','රක්ෂණ තක්සේරුකරු එන තුරු රැඳී සිටින්න','තැපැල් කාර්යාලයේ ස්ථාන දඩය ගෙවන්න'],'අනතුරකදී: නවතින්න, විස්තර දෙන්න, තුවාලකරුට ප්‍රතිකාර ලබා දෙන්න, වහාම පොලිසියට වාර්තා කරන්න.'],
-['rule','හදිසි වාහනයක් (ගිලන් රථ, ගිනි නිවන) සයිරන් නාද කරමින් පැමිණේ. ඔබ කළ යුත්තේ?',['වමට ගොස් ආරක්ෂිත තැනක වේගය අඩු කිරීම හෝ නැවැත්වීම; හන්දිය තුළ හෝ පදික මාරුවේ නොනවතින්න','එය පිටුපසින් රතු ලාම්පුව හරහා යන්න','එම තැනම හදිසියේ නවතින්න','වේගය වැඩි කර ඉදිරියට යන්න'],'හදිසි වාහනවලට මග දෙන්න, නමුත් එය පිටුපසින් රතු ලාම්පු පසු නොකරන්න.'],
-['rule','හන්දියකදී දකුණට හැරෙන විට ප්‍රමුඛතාව ඇත්තේ කාටද?',['ඉදිරියෙන් කෙළින් එන හෝ වමට හැරෙන වාහනවලට','දකුණට හැරෙන ඔබට','ප්‍රථමයෙන් සංඥා කළ අයට','කුඩා වාහනවලට'],'දකුණට හැරෙන විට ඉදිරියෙන් එන ප්‍රවාහයට මග දිය යුතුය.'],
-['rule','ඉන්ධන පිරවුම්හලකින් කාර්යබහුල මාර්ගයකට පිටවන විට?',['දෙපැත්තේම ආරක්ෂිත පරතරයක් ලැබෙන තුරු රැඳී සිට, ප්‍රවාහයට බාධා නොකර පිටවන්න','මාර්ගයේ ප්‍රවාහය ඔබ වෙනුවෙන් නැවතිය යුතුය','තත්පර 3ක් සංඥා කළ පසු යා හැක','වම් පස පමණක් බැලීම ප්‍රමාණවත්'],'පෞද්ගලික භූමියකින් පිටවන විට මාර්ගයේ වාහනවලට බාධා නොකළ යුතුය.'],
-['rule','දැල්වෙන කහ ලාම්පුවකින් අදහස් වන්නේ?',['ප්‍රවේශමෙන් ඉදිරියට ගොස් ප්‍රමුඛතා නීති අනුව මග දෙන්න','සම්පූර්ණයෙන් නවතින්න','වේගය වැඩි කරන්න','මාර්ගය වසා ඇත'],'දැල්වෙන කහ – හන්දිවල හෝ ප්‍රධාන ලාම්පු ක්‍රියා නොකරන විට.'],
-['rule','රියදුරුගේ දකුණු අත කෙළින් තිරස්ව එළියට දිගු කර ඇත්නම් එයින් අදහස් වන්නේ?',['දකුණට හැරෙන / දකුණට යන බව','වේගය අඩු කරන බව','වමට හැරෙන බව','පසුපස වාහනයට ඉස්සර කරන්නැයි කියන බව'],'දකුණු අත කෙළින් දිගු කිරීම = දකුණට.'],
-['rule','රියදුරුගේ දකුණු අත එළියට දිගු කර ඉහළ පහළ සොලවන්නේ නම්?',['වේගය අඩු කරන / නවතින බව','දකුණට හැරෙන බව','වමට හැරෙන බව','ඉස්සර කිරීමට ආරාධනා කරන බව'],'පදික මාරු අසල විශේෂයෙන් වැදගත් සංඥාවකි.'],
-['rule','ඔබේ ඉන්ඩිකේටර් ක්‍රියා නොකරයි, වමට හැරීමට අවශ්‍යයි. කළ යුතු අත් සංඥාව?',['දකුණු අත එළියට දිගු කර අත්ල ඉදිරියට හරවා උරහිසේ සිට වාමාවර්තව කරකවන්න','දකුණු අත කෙළින් දිගු කර තබා ගන්න','දකුණු අත ඉහළ පහළ සොලවන්න','වම් අත මගී කවුළුවෙන් දිගු කරන්න'],'වමට හැරීමේ අත් සංඥාව – දකුණු අත වාමාවර්තව කරකැවීම.'],
-['rule','පොලිස් නිලධාරියෙක් අත් දෙකම ඉහළට ඔසවා ඇත්නම්?',['සියලු දිශාවල වාහන නවතින්න','ඉදිරියෙන් එන වාහන යා හැක','දකුණෙන් එන වාහන යා හැක','වේගය වැඩි කරන්න'],'අත් දෙකම ඉහළට = සියලු වාහන නවතින්න.'],
-['rule','පොලිස් නිලධාරියෙක් එක් අතක් ඉදිරියෙන් එන වාහන දෙසට ද අනෙක් අත පසුපසින් එන වාහන දෙසට පැත්තට ද දිගු කරයි. අර්ථය?',['ඉදිරියෙන් සහ පිටුපසින් එන වාහන දෙකම නවතින්න','ඉදිරියෙන් එන වාහන යා හැක','වමෙන් එන වාහන යා හැක','පිටුපස වාහන පමණක් නවතින්න'],'ඉදිරිපස සහ පිටුපස දෙකම නවතින්න.'],
-['rule','පසුපසින් එන වාහනයට ඉස්සර කිරීමට අවසර දෙන බව සංඥා කළ හැක්කේ කෙසේද?',['දකුණු අත උරහිසට පහළින් අත්ල ඉදිරියට ඉදිරියට-පසුපසට සෙලවීම හෝ වම් ඉන්ඩිකේටරය දැල්වීම','හැසඩ් ලයිට් කිහිප වරක් දැල්වීම','නළාව දෙවරක් නාද කිරීම','දකුණු අත අත්ල පහළට ඉහළ පහළ සෙලවීම'],'දකුණු අත අත්ල පහළට ඉහළ පහළ සෙලවීම = ඉස්සර නොකරන්නැයි දැන්වීම.'],
-['rule','STOP සංඥාවක් සහ GIVE WAY සංඥාවක් අතර වෙනස කුමක්ද?',['STOP හිදී සෑම විටම නවතිය යුතුය; GIVE WAY හිදී ප්‍රවාහය අනුව අවශ්‍ය නම් පමණක් නවතිය යුතුය','දෙකේදීම සෑම විටම නවතිය යුතුය','GIVE WAY ප්‍රධාන මාර්ගයට වඩා ප්‍රමුඛතාව දෙයි','STOP රාත්‍රියේ පමණක් බලපායි'],'STOP – සම්පූර්ණ නැවතුම අනිවාර්යයි (සෙමින් පෙරළී යාම ප්‍රමාණවත් නොවේ).'],
-['rule','අධිවේගී මාර්ගයේ හදිසි අවස්ථාවකදී ඇමතිය යුතු අංකය?',['1969','119','1990','110'],'119 පොලිසිය · 1990 ගිලන් රථ · 1969 අධිවේගී මාර්ග.'],
-['rule','සෑම රියදුරෙකුගේම පොදු වගකීම (වගන්තිය 149) කුමක්ද?',['අනෙක් රියදුරෙක් නීතිය කඩ කළද අනතුරක් වළක්වා ගැනීමට අවශ්‍ය සියලු පියවර ගැනීම','තමාට ප්‍රමුඛතාව ඇත්නම් කිසිවක් නොකිරීම','නීතිය කඩ කළ අයට දඩ ගැසීම','පොලිසිය එන තුරු බලා සිටීම'],'ප්‍රමුඛතාවක් අනතුරකට අවසරයක් නොවේ.'],
-['rule','කොළ ඊතල ලාම්පුවක් දැල්වෙන විට, ප්‍රධාන ලාම්පුව රතු වුවද?',['එම මංතීරුවේ වාහනවලට ඊතලය දිශාවට යා හැක; අනෙක් වාහන රතුවලට කීකරු විය යුතුය','සියලු වාහනවලට යා හැක','කිසිවෙකුට යා නොහැක','පදිකයින්ට පමණි'],'කොළ ඊතලය එම දිශාවට පමණක් අවසර දෙයි.'],
-['rule','දුම්රිය හරස් මාර්ගයක රතු ලාම්පු දෙකක් මාරුවෙන් මාරුවට දැල්වේ. ඔබ කළ යුත්තේ?',['නවතින්න, ලාම්පු දැල්වෙන තාක් ඉදිරියට නොයන්න','ප්‍රවේශමෙන් ඉක්මනින් හරස් කරන්න','නළාව නාද කර යන්න','දුම්රියක් නොපෙනේ නම් යන්න'],'දැල්වෙන රතු යුගලය – නවතින්න.'],
-['rule','ශ්‍රී ලංකාවේ අනතුරු ඇඟවීමේ සංඥා දක්වන්නේ කුමන වර්ණවලින්ද?',['කහ පසුබිමක කළු සංකේත සහ දාරය','සුදු ත්‍රිකෝණයක රතු දාරය','නිල් පසුබිමක සුදු සංකේත','කොළ පසුබිමක සුදු සංකේත'],'රතු දාර සහිත සුදු ත්‍රිකෝණය යුරෝපීය ක්‍රමයයි – උගුලකි.'],
-['rule','රතු වළල්ලක් සහිත සුදු රවුමක රතු ඇල තීරුවක් නැතිව කළු ඊතලයක් ඇති සංඥාවක් අයත් වන්නේ?',['අනිවාර්ය සංඥාවලට','තහනම් සංඥාවලට','අනතුරු ඇඟවීමේ සංඥාවලට','තොරතුරු සංඥාවලට'],'ශ්‍රී ලංකාවේ අනිවාර්ය සංඥා නිල් නොවේ – රතු වළල්ල, කළු ඊතලය, තීරුවක් නැත.'],
-['rule','පදික මාරුවකට ළඟා වන විට ඉස්සර කිරීම?',['තහනම්','ආරක්ෂිත නම් අවසර ඇත','නළාව නාද කළොත් අවසර ඇත','රාත්‍රියේ අවසර ඇත'],'පදික මාරුවකට ළඟා වන විට ඉස්සර නොකළ යුතුය; වේගය අඩු කර නැවැත්වීමට සූදානම් වන්න.'],
+['rule','නාගරික (ගොඩනැගිලි සහිත) ප්‍රදේශයක විවිධ වාහන සඳහා වන වේග සීමා මොනවාද?',['මෝටර් සයිකල්, මෝටර් රථ, ද්විත්ව කාර්ය 50 · ලොරි 50 · ත්‍රිරෝද රථ 40','මෝටර් රථ 70 · ලොරි 60 · ත්‍රිරෝද රථ 40','මෝටර් රථ 60 · ලොරි 50 · ත්‍රිරෝද රථ 50','මෝටර් රථ 50 · ලොරි 40 · ත්‍රිරෝද රථ 30'],'නාගරික ප්‍රදේශ: මෝටර් රථ/මෝටර් සයිකල් 50, බස්/ලොරි 50, ත්‍රිරෝද රථ/ට්‍රැක්ටර් 40.'],
+['rule','නාගරික නොවන ප්‍රදේශයක මෝටර් රථයක සාමාන්‍ය උපරිම වේග සීමාව කුමක්ද?',['පැයට කි.මී. 70','පැයට කි.මී. 50','පැයට කි.මී. 60','පැයට කි.මී. 80'],'මෝටර් රථ, ද්විත්ව කාර්ය වාහන සහ මෝටර් සයිකල් – නාගරික නොවන ප්‍රදේශවල 70.'],
+['rule','නාගරික නොවන මාර්ගයක බස් රථයක හෝ ලොරියක උපරිම වේග සීමාව කුමක්ද?',['පැයට කි.මී. 60','පැයට කි.මී. 70','පැයට කි.මී. 50','පැයට කි.මී. 80'],'බස්/ලොරි – නාගරික ප්‍රදේශවල 50, නාගරික නොවන ප්‍රදේශවල 60.'],
+['rule','ත්‍රිරෝද රථයක උපරිම වේග සීමාව කුමක්ද?',['සෑම ප්‍රදේශයකම පැයට කි.මී. 40','නාගරික ප්‍රදේශවල 40, නාගරික නොවන ප්‍රදේශවල 60','පැයට කි.මී. 50','පැයට කි.මී. 70'],'ත්‍රිරෝද රථ සහ ට්‍රැක්ටර් – සෑම ප්‍රදේශයකම 40.'],
+['rule','ශ්‍රී ලංකාවේ අධිවේගී මාර්ගයක මෝටර් රථයක උපරිම වේග සීමාව කුමක්ද?',['පැයට කි.මී. 100','පැයට කි.මී. 80','පැයට කි.මී. 120','පැයට කි.මී. 110'],'අධිවේගී මාර්ගයේ උපරිම වේග සීමාව 100 කි. ඇතුල්වීමේ/පිටවීමේ මාර්ග (ramps) 60 කි.'],
+['rule','අධිවේගී මාර්ගයේ ඇතුල්වීමේ/පිටවීමේ මාර්ගයක (ramp) වේග සීමාව කුමක්ද?',['පැයට කි.මී. 60','පැයට කි.මී. 40','පැයට කි.මී. 80','පැයට කි.මී. 100'],'ඇතුල්වීමේ/පිටවීමේ මාර්ග (ramp) වේග සීමාව 60 කි.'],
+['rule','පහත සඳහන් වාහන අතරින් අධිවේගී මාර්ගය භාවිත කිරීම තහනම් නොවන්නේ කුමන වාහනයටද?',['ලොරි රථ','ත්‍රිරෝද රථ','මෝටර් සයිකල්','ට්‍රැක්ටර් (ඉඩම් වාහන)'],'අධිවේගී මාර්ගයේ පදිකයින්, ත්‍රිරෝද රථ, මෝටර් සයිකල්, ට්‍රැක්ටර් සහ පාපැදි ගමන් කිරීම තහනම්ය. ලොරි රථවලට අවසර ඇත.'],
+['rule','පාලනයක් නොමැති මංසන්ධියකට මෝටර් රථ දෙකක් එකවර පැමිණේ. නැවතී සිටිය යුත්තේ කුමන මෝටර් රථයද?',['අනෙක් මෝටර් රථය තමාගේ දකුණු පසින් ඇති මෝටර් රථය','වේගවත් මෝටර් රථය','බර වැඩි මෝටර් රථය','පසුව නළාව නාද කළ මෝටර් රථය'],'පාලනයක් නොමැති මංසන්ධියකදී දකුණු පසින් පැමිණෙන වාහනයට මාර්ගය ඉඩ දිය යුතුය.'],
+['rule','ශ්‍රී ලංකාවේ වටරවුමකට ඇතුල් වන විට අනුගමනය කළ යුතු නීතිය කුමක්ද?',['දක්ෂිණාවර්තව ගමන් කරන්න; දැනටමත් වටරවුමේ දකුණු පසින් පැමිණෙන වාහනවලට මාර්ගය ඉඩ දෙන්න','වාමාවර්තව ගමන් කර වම් පසින් පැමිණෙන වාහනවලට මාර්ගය ඉඩ දෙන්න','වටරවුමට ඇතුල් වන වාහනවලට ප්‍රමුඛතාව හිමි වේ','විශාල වාහනවලට සෑම විටම ප්‍රමුඛතාව හිමි වේ'],'මැද දූපත ඔබේ දකුණු පසින් තබා දක්ෂිණාවර්තව ගමන් කරන්න.'],
+['rule','රථ වාහන ආලෝක සංඥාවේ කහ ලාම්පුව පමණක් දැල්වේ. ඊළඟට දැල්වෙන්නේ කුමක්ද?',['රතු','කොළ','රතු සහ කහ එකවිට','නිවී දැල්වෙන කහ'],'අනුපිළිවෙළ: රතු → රතු+කහ → කොළ → කහ → රතු.'],
+['rule','රතු සහ කහ ලාම්පු එකවිට දැල්වෙන විට කළ යුත්තේ කුමක්ද?',['තවමත් නැවතුම් රේඛාව පසු නොකර සිටින්න – ඊළඟට කොළ දැල්වේ','ඉක්මනින් ඉදිරියට ගමන් කරන්න','වේගය අඩු කර ඉදිරියට ගමන් කරන්න','වමට හැරවීමට පමණක් ඉදිරියට යා හැක'],'රතු+කහ එකවිට = කොළ දැල්වීමට ආසන්නය, නමුත් තවමත් ඉදිරියට නොයන්න.'],
+['rule','ඔබේ ආලෝක සංඥාව කොළ වුවද, රථවාහන හසුරුවන පොලිස් නිලධාරියෙකු නැවැත්වීමට සංඥා කරයි. ඔබ කළ යුත්තේ කුමක්ද?',['නවතින්න – රථවාහන හසුරුවන නිලධාරියාගේ නියෝගය ආලෝක සංඥාවලට වඩා ඉහළ වේ','ඉදිරියට යන්න – කොළ ආලෝක සංඥාව සෑම විටම ඉහළ වේ','නළාව නාද කර සෙමින් ඉදිරියට යන්න','නැවතුම් රේඛාවක් ඇත්නම් පමණක් නවතින්න'],'පාලන ප්‍රමුඛතා පිළිවෙළ: පොලිස් නිලධාරී > ආලෝක සංඥා > මාර්ග සංඥා/සලකුණු > සාමාන්‍ය නීති.'],
+['rule','දෙමංතීරු මාර්ගයක වම් පසින් ඉස්සර කිරීම නීත්‍යනුකූල වන්නේ කවදාද?',['ඉදිරියෙන් ගමන් කරන වාහනය දකුණට හැරවීමට සංඥා කර මාර්ගය මැදට ගත් විට','ඉදිරියෙන් ගමන් කරන වාහනය සෙමින් යන විට','වම් පස මාර්ග කරේ ඉඩ ඇති විට','දකුණු පස ඉදිරියෙන් එන වාහනවලින් අවහිර වූ විට'],'සාමාන්‍යයෙන් දකුණු පසින් ඉස්සර කළ යුතුය. මාර්ග කරෙන් හෝ පදික වේදිකාවෙන් කිසි විටෙකත් ඉස්සර නොකරන්න.'],
+['rule','සාමාන්‍යයෙන් ඉස්සර කළ යුත්තේ කුමන පසින්ද?',['දකුණු පසින්','වම් පසින්','ඉඩ ඇති ඕනෑම පසකින්','මාර්ග කරෙන්'],'නීතිය අනුව ඉස්සර කළ යුත්තේ දකුණු (offside) පසින්ය.'],
+['rule','ඉස්සර කිරීමෙන් පසු නැවත වම් මංතීරුවට පැමිණිය යුත්තේ කවදාද?',['ඉස්සර කළ වාහනයේ ඉදිරිපස අභ්‍යන්තර කැඩපතේ පෙනෙන විට','එය පසු කළ සැණින්','මීටර් 5ක් ඉදිරියට ගිය පසු','නළාව නාද කළ පසු'],'පසු කළ වාහනය අභ්‍යන්තර කැඩපතේ පෙනෙන තුරු රැඳී, වමට සංඥා කර ආපසු පැමිණෙන්න.'],
+['rule','ඉස්සර කිරීම තහනම් ස්ථාන මොනවාද?',['වංගු, කඳු මුදුන්, මංසන්ධි, පදික මාරු, දුම්රිය හරස් මාර්ග සහ පටු පාලම්','කෙළින් ඇති පළල් මාර්ග','කැඩුණු මැද රේඛා සහිත මාර්ග','අධිවේගී මාර්ග'],'ඉදිරිය පැහැදිලිව නොපෙනෙන හෝ අනතුරුදායක ස්ථානවලදී ඉස්සර කිරීම තහනම් වේ.'],
+['rule','සංඥා නොමැති පටු, බෑවුම් සහිත කඳු මාර්ගයක වාහන දෙකක් හමු වේ. සාමාන්‍යයෙන් පළමුව ගමන් කළ යුත්තේ කුමන වාහනයද?',['කන්ද නගින වාහනය','කන්දෙන් බසින වාහනය','විශාල වාහනය','පළමුව ලාම්පු දැල්වූ වාහනය'],'කන්ද නගින වාහනය නැවැත්වුවහොත් බෑවුමේදී නැවත පණගැන්වීම අපහසු වේ. එබැවින් කන්ද බසින වාහනය මාර්ගය ඉඩ දිය යුතුය.'],
+['rule','නළාව භාවිත කළ හැක්කේ කුමන අවස්ථාවලදීද?',['අනතුරක් වළක්වා ගැනීමට හෝ ඉස්සර කිරීමේ අදහස දැන්වීමට පමණි','ඕනෑම අවස්ථාවක','රාත්‍රී කාලයේදී පමණි','පදිකයින් ඉවත් කිරීමට නිතර නාද කළ හැක'],'දිගු වේලාවක් හෝ අනිසි ලෙස නළාව භාවිත කිරීම වරදකි. බහු-ස්වර නළා තහනම් වේ.'],
+['rule','රිය පදවන විට ජංගම දුරකථන භාවිතය පිළිබඳ නීතිය කුමක්ද?',['රිය පදවන විට කිසිදු ජංගම සන්නිවේදන උපකරණයක් භාවිත නොකළ යුතුය','වාහන පෝලිමේ නැවතී ඇති විට භාවිත කළ හැක','කෙටි පණිවිඩ යැවීම පමණක් තහනම් වේ','විනාඩියකට අඩු කාලයක ඇමතුම් ලබා ගත හැක'],'රිය පදවන විට ජංගම දුරකථනය කිසි විටෙකත් භාවිත නොකරන්න.'],
+['rule','ආදායම් බලපත්‍රය (Revenue licence) ප්‍රදර්ශනය කළ යුත්තේ කොතැනද?',['වාහනයේ ඉදිරිපස වම් පස','පිටුපස වීදුරුවේ','වාහනයේ ලාච්චුව තුළ','වාහනය තුළ ඕනෑම ස්ථානයක'],'ආදායම් බලපත්‍රය ඉදිරිපස වම් (near) පස ප්‍රදර්ශනය කළ යුතුය.'],
+['rule','පෞද්ගලික මෝටර් රථයක රැගෙන යා යුතු ලේඛන මොනවාද?',['රියදුරු බලපත්‍රය, රක්ෂණ සහතිකය, ආදායම් බලපත්‍රය, දුම් පරීක්ෂණ සහතිකය','උප්පැන්න සහතිකය සහ ජාතික හැඳුනුම්පත පමණි','වාහනයේ ලියාපදිංචි සහතිකයේ මුල් පිටපත පමණි','කිසිදු ලේඛනයක් අවශ්‍ය නොවේ'],'පොලිස් නිලධාරියෙකු ඉල්ලා සිටි විගස රියදුරු බලපත්‍රය ඉදිරිපත් කළ යුතුය.'],
+['rule','මෝටර් වාහනයක් සඳහා අවම වශයෙන් තිබිය යුතු රක්ෂණය කුමක්ද?',['තෙවන පාර්ශ්ව රක්ෂණය','පූර්ණ (comprehensive) රක්ෂණය','කිසිදු රක්ෂණයක් අවශ්‍ය නැත','රියදුරුගේ ජීවිත රක්ෂණය පමණි'],'අවම වශයෙන් තෙවන පාර්ශ්ව රක්ෂණය තිබීම අනිවාර්ය වේ.'],
+['rule','මත්පැන් හෝ මත්ද්‍රව්‍ය භාවිත කළ රියදුරෙකුට සිදුවන ප්‍රධාන බලපෑම කුමක්ද?',['අනතුරකට ප්‍රතික්‍රියා කිරීමට ගතවන කාලය වැඩි වේ','අනතුරකට ප්‍රතික්‍රියා කිරීමට ගතවන කාලය අඩු වේ','දුර නිවැරදිව තක්සේරු කිරීම වැඩි දියුණු වේ','රාත්‍රී කාලයේ පෙනීම තියුණු වේ'],'මත්පැන් තීරණ ගැනීමේ හැකියාව සහ ප්‍රතික්‍රියා දැක්වීම අඩපණ කරයි. ආරක්ෂිතම නීතිය – මත්පැන් පානය කර රිය නොපදවන්න.'],
+['rule','ඔබේ වාහනයෙන් පදිකයෙකු තුවාල වී සිහිසුන් වී ඇත. නීතිය අනුව කළ යුත්තේ කුමක්ද?',['වාහනය නවතා, තුවාලකරු වහාම රෝහලට ගෙන ගොස් ළඟම පොලිසියට වහාම දැනුම් දෙන්න','එම ස්ථානයෙන් පිටව ගොස් පැය 48 ඇතුළත පොලිසියට දැනුම් දෙන්න','රක්ෂණ තක්සේරුකරු එන තුරු රැඳී සිටින්න','තැපැල් කාර්යාලය මගින් ස්ථානීය දඩය ගෙවන්න'],'අනතුරකදී: නවතින්න, අදාළ විස්තර ලබා දෙන්න, තුවාලකරුට ප්‍රතිකාර ලබා දෙන්න, වහාම පොලිසියට වාර්තා කරන්න.'],
+['rule','හදිසි සේවා වාහනයක් (ගිලන් රථ, ගිනි නිවන රථ) සයිරන් නාද කරමින් පැමිණේ. ඔබ කළ යුත්තේ කුමක්ද?',['වමට ගෙන ආරක්ෂිත ස්ථානයක වේගය අඩු කරන්න හෝ නවතින්න; මංසන්ධිය තුළ හෝ පදික මාරුව මත නොනවතින්න','එම වාහනය පිටුපසින් රතු ආලෝක සංඥාව හරහා ගමන් කරන්න','සිටින ස්ථානයේම හදිසියේ නවතින්න','වේගය වැඩි කර ඉදිරියට ගමන් කරන්න'],'හදිසි සේවා වාහනවලට මාර්ගය ඉඩ දෙන්න, නමුත් ඒවා පිටුපසින් රතු ආලෝක සංඥා පසු කර නොයන්න.'],
+['rule','මංසන්ධියකදී දකුණට හැරවීමේදී ප්‍රමුඛතාව හිමි වන්නේ කාටද?',['ඉදිරියෙන් කෙළින් පැමිණෙන හෝ වමට හැරෙන වාහනවලට','දකුණට හැරෙන ඔබේ වාහනයට','ප්‍රථමයෙන් සංඥා කළ වාහනයට','කුඩා වාහනවලට'],'දකුණට හැරවීමේදී ඉදිරියෙන් පැමිණෙන වාහන ප්‍රවාහයට මාර්ගය ඉඩ දිය යුතුය.'],
+['rule','ඉන්ධන පිරවුම්හලකින් කාර්යබහුල මාර්ගයකට පිටවන විට කළ යුත්තේ කුමක්ද?',['දෙපසින්ම ආරක්ෂිත ඉඩක් ලැබෙන තුරු රැඳී සිට, වාහන ප්‍රවාහයට බාධා නොකර පිටවන්න','මාර්ගයේ ගමන් කරන වාහන ඔබ වෙනුවෙන් නැවැත්විය යුතුය','තත්පර 3ක් සංඥා ලබා දුන් පසු පිටවිය හැක','වම් පස පමණක් පරීක්ෂා කිරීම ප්‍රමාණවත් වේ'],'පෞද්ගලික භූමියකින් පිටවන විට මාර්ගයේ වාහනවලට බාධා නොකළ යුතුය.'],
+['rule','නිවී දැල්වෙන කහ ආලෝක සංඥාවකින් අදහස් වන්නේ කුමක්ද?',['ප්‍රවේශමෙන් ඉදිරියට ගොස් ප්‍රමුඛතා නීති අනුව මාර්ගය ඉඩ දෙන්න','සම්පූර්ණයෙන් නවතින්න','වේගය වැඩි කර ඉදිරියට යන්න','ඉදිරි මාර්ගය වසා ඇති බව'],'නිවී දැල්වෙන කහ – මංසන්ධිවල හෝ ප්‍රධාන ආලෝක සංඥා ක්‍රියා නොකරන අවස්ථාවලදී දක්නට ලැබේ.'],
+['rule','රියදුරුගේ දකුණු අත කෙළින් තිරස්ව පිටතට දිගු කර ඇත්නම් එයින් අදහස් වන්නේ කුමක්ද?',['දකුණට හැරෙන හෝ දකුණට ගමන් කරන බව','වේගය අඩු කරන බව','වමට හැරෙන බව','පසුපසින් එන වාහනයට ඉස්සර කරන ලෙස දන්වන බව'],'දකුණු අත කෙළින් දිගු කිරීම = දකුණට.'],
+['rule','රියදුරුගේ දකුණු අත පිටතට දිගු කර ඉහළ පහළ සොලවන්නේ නම් ඉන් අදහස් වන්නේ කුමක්ද?',['වේගය අඩු කරන හෝ නවතින බව','දකුණට හැරෙන බව','වමට හැරෙන බව','පසුපස වාහනයට ඉස්සර කිරීමට අවසර දෙන බව'],'පදික මාරු අසල විශේෂයෙන් වැදගත් සංඥාවකි.'],
+['rule','ඔබේ වාහනයේ හැරවුම් සංඥා (ඉන්ඩිකේටර්) ක්‍රියා නොකරන අතර වමට හැරවීමට අවශ්‍ය වේ. කළ යුතු අත් සංඥාව කුමක්ද?',['දකුණු අත පිටතට දිගු කර අත්ල ඉදිරියට හරවා උරහිසේ සිට වාමාවර්තව කරකවන්න','දකුණු අත කෙළින් දිගු කර තබා ගන්න','දකුණු අත ඉහළ පහළ සොලවන්න','වම් අත මගී කවුළුවෙන් දිගු කරන්න'],'වමට හැරවීමේ අත් සංඥාව – දකුණු අත වාමාවර්තව කරකැවීමයි.'],
+['rule','පොලිස් නිලධාරියෙකු අත් දෙකම ඉහළට ඔසවා ඇත්නම් ඉන් අදහස් වන්නේ කුමක්ද?',['සියලු දිශාවල වාහන නවතින්න','ඉදිරියෙන් එන වාහන ගමන් කළ හැක','දකුණු පසින් එන වාහන ගමන් කළ හැක','වේගය වැඩි කර ඉදිරියට යන්න'],'අත් දෙකම ඉහළට එසවීම = සියලු වාහන නවතින්න.'],
+['rule','පොලිස් නිලධාරියෙකු එක් අතක් ඉදිරියෙන් එන වාහන දෙසට ද අනෙක් අත පසුපසින් එන වාහන දෙසට පසට ද දිගු කරයි. එහි අර්ථය කුමක්ද?',['ඉදිරියෙන් සහ පසුපසින් එන වාහන දෙපසම නවතින්න','ඉදිරියෙන් එන වාහන ගමන් කළ හැක','වම් පසින් එන වාහන ගමන් කළ හැක','පසුපසින් එන වාහන පමණක් නවතින්න'],'ඉදිරිපසින් සහ පසුපසින් පැමිණෙන වාහන දෙපසම නවතින්න.'],
+['rule','පසුපසින් එන වාහනයට ඉස්සර කිරීමට අවසර දෙන බව සංඥා කළ හැක්කේ කෙසේද?',['දකුණු අත උරහිසට පහළින් තබා අත්ල ඉදිරියට හරවා ඉදිරියට හා පසුපසට සෙලවීම හෝ වම් ඉන්ඩිකේටරය දැල්වීම','අනතුරු හැඟවීමේ ලාම්පු (හැසඩ් ලයිට්) කිහිප වරක් දැල්වීම','නළාව දෙවරක් නාද කිරීම','දකුණු අතේ අත්ල පහළට හරවා ඉහළ පහළ සෙලවීම'],'දකුණු අතේ අත්ල පහළට හරවා ඉහළ පහළ සෙලවීම = ඉස්සර නොකරන ලෙස දැන්වීම.'],
+['rule','STOP සංඥාවක් සහ GIVE WAY සංඥාවක් අතර වෙනස කුමක්ද?',['STOP සංඥාවේදී සෑම විටම නැවැත්විය යුතුය; GIVE WAY සංඥාවේදී වාහන ප්‍රවාහය අනුව අවශ්‍ය නම් පමණක් නැවැත්විය යුතුය','සංඥා දෙකේදීම සෑම විටම නැවැත්විය යුතුය','GIVE WAY සංඥාව මගින් ප්‍රධාන මාර්ගයට වඩා ප්‍රමුඛතාව හිමි වේ','STOP සංඥාව රාත්‍රී කාලයේදී පමණක් බලපායි'],'STOP – වාහනය සම්පූර්ණයෙන් නැවැත්වීම අනිවාර්ය වේ (සෙමින් ගමන් කරමින් යාම ප්‍රමාණවත් නොවේ).'],
+['rule','අධිවේගී මාර්ගයේ හදිසි අවස්ථාවකදී ඇමතිය යුතු දුරකථන අංකය කුමක්ද?',['1969','119','1990','110'],'119 පොලිසිය · 1990 ගිලන් රථ · 1969 අධිවේගී මාර්ග.'],
+['rule','සෑම රියදුරෙකුගේම පොදු වගකීම (වගන්තිය 149) කුමක්ද?',['අනෙක් රියදුරෙකු නීතිය කඩ කළද අනතුරක් වළක්වා ගැනීමට අවශ්‍ය සියලු පියවර ගැනීම','තමාට ප්‍රමුඛතාව ඇත්නම් කිසිදු පියවරක් නොගැනීම','නීතිය කඩ කළ අයට දඩ ගැසීම','පොලිසිය එන තුරු බලා සිටීම'],'ප්‍රමුඛතාව හිමි වීම යනු අනතුරක් සිදු කිරීමට ලැබෙන අවසරයක් නොවේ.'],
+['rule','ප්‍රධාන ආලෝක සංඥාව රතු වුවද කොළ ඊතල ලාම්පුවක් දැල්වෙන විට කළ යුත්තේ කුමක්ද?',['එම මංතීරුවේ වාහනවලට ඊතලය දක්වන දිශාවට ගමන් කළ හැක; අනෙකුත් වාහන රතු සංඥාවට අවනත විය යුතුය','සියලු වාහනවලට ගමන් කළ හැක','කිසිවෙකුට ගමන් කළ නොහැක','පදිකයින්ට පමණක් ගමන් කළ හැක'],'කොළ ඊතල සංඥාවෙන් එම දිශාවට පමණක් ගමන් කිරීමට අවසර ලැබේ.'],
+['rule','දුම්රිය හරස් මාර්ගයක රතු ලාම්පු දෙකක් මාරුවෙන් මාරුවට නිවී දැල්වේ. ඔබ කළ යුත්තේ කුමක්ද?',['නවතින්න, ලාම්පු දැල්වෙන තාක් කල් ඉදිරියට නොයන්න','ප්‍රවේශමෙන් ඉක්මනින් හරස් මාර්ගය පසු කරන්න','නළාව නාද කර ඉදිරියට ගමන් කරන්න','දුම්රියක් නොපෙනේ නම් ඉදිරියට ගමන් කරන්න'],'මාරුවෙන් මාරුවට දැල්වෙන රතු ලාම්පු යුගලය – නවතින්න.'],
+['rule','ශ්‍රී ලංකාවේ අනතුරු හැඟවීමේ සංඥා දක්වන්නේ කුමන වර්ණවලින්ද?',['කහ පසුබිමක කළු සංකේත සහ දාරය','සුදු ත්‍රිකෝණයක රතු දාරය','නිල් පසුබිමක සුදු සංකේත','කොළ පසුබිමක සුදු සංකේත'],'රතු දාර සහිත සුදු ත්‍රිකෝණය යුරෝපීය ක්‍රමයයි – එයින් නොරැවටෙන්න.'],
+['rule','රතු වළල්ලක් සහිත සුදු රවුමක් තුළ රතු ඇල තීරුවක් නොමැතිව කළු ඊතලයක් ඇති සංඥාවක් අයත් වන්නේ කුමන වර්ගයටද?',['අනිවාර්ය සංඥාවලට','තහනම් සංඥාවලට','අනතුරු හැඟවීමේ සංඥාවලට','තොරතුරු සංඥාවලට'],'ශ්‍රී ලංකාවේ අනිවාර්ය සංඥා නිල් පැහැති නොවේ – රතු වළල්ල සහ කළු ඊතලය පමණි; තීරුවක් නැත.'],
+['rule','පදික මාරුවකට ළඟා වන විට ඉස්සර කිරීම පිළිබඳ නීතිය කුමක්ද?',['තහනම් වේ','ආරක්ෂිත නම් අවසර ඇත','නළාව නාද කළහොත් අවසර ඇත','රාත්‍රී කාලයේදී අවසර ඇත'],'පදික මාරුවකට ළඟා වන විට ඉස්සර නොකළ යුතුය; වේගය අඩු කර නැවැත්වීමට සූදානම් වන්න.'],
 // --- technical
-['tech','රිය පදවන විට රතු එන්ජින් තෙල් පීඩන ලාම්පුව දැල්වේ. වහාම කළ යුත්තේ?',['ආරක්ෂිතව පැත්තකට කර නවතා එන්ජිම නිවා දමන්න','වේගයෙන් ළඟම ගරාජයට යන්න','නියුට්‍රල් දමා ලිස්සා යන්න','ඇක්සිලරේටරය තද කරන්න'],'රතු ලාම්පු (තෙල්, තිරිංග, උෂ්ණත්වය, බැටරි) = වහාම නවතින්න. දිගටම ගියහොත් එන්ජිම විනාශ විය හැක.'],
-['tech','ටයරයේ මැද කොටස දාරවලට වඩා ඉක්මනින් ගෙවී යයි. හේතුව?',['නිර්දේශිත ප්‍රමාණයට වඩා වාතය වැඩි වීම','නිර්දේශිත ප්‍රමාණයට වඩා වාතය අඩු වීම','රෝද සමබර නොවීම','තිරිංග ඇලී තිබීම'],'මැද ගෙවීම = වාතය වැඩි · දෙදාර = වාතය අඩු · එක් දාරයක් = රෝද පෙළගැස්ම.'],
-['tech','ටයරයේ දෙපස දාර දෙකම ඉක්මනින් ගෙවී යයි. හේතුව?',['වාතය අඩු වීම','වාතය වැඩි වීම','තිරිංග දුර්වල වීම','එන්ජින් තෙල් අඩු වීම'],'දෙදාර ගෙවීම – වාතය අඩුයි.'],
-['tech','ටයරයේ එක් දාරයක් පමණක් ගෙවී යයි. බොහෝ විට හේතුව?',['රෝද පෙළගැස්ම (wheel alignment) වැරදි වීම','වාතය වැඩි වීම','ඉන්ධන අඩු වීම','බැටරිය දුර්වල වීම'],'එක් දාරයක් ගෙවීම – alignment දෝෂය.'],
-['tech','රිය පදවන විට කහ ABS ලාම්පුව දැල්වී පවතී. එයින් අදහස් වන්නේ?',['සාමාන්‍ය තිරිංග ක්‍රියා කරයි, නමුත් ABS ක්‍රියා නොකරයි – දැඩි තිරිංගකදී රෝද ලොක් විය හැක','පාද තිරිංග ක්‍රියා නොකරයි','හෑන්ඩ් බ්‍රේක් ස්වයංක්‍රීයව යෙදී ඇත','තිරිංග තෙල් සම්පූර්ණයෙන් හිස් වී ඇත'],'කහ ලාම්පු = ඉක්මනින් පරීක්ෂා කරන්න.'],
-['tech','කඳු බෑවුමකින් පහළට යාමට පෙර අඩු ගියරයක් තෝරා ගන්නේ ඇයි?',['එන්ජින් තිරිංග භාවිතා කර තිරිංග අධික ලෙස රත් වීම (brake fade) වැළැක්වීමට','ඉන්ධන ඉතිරි කිරීමට','සුක්කානම සැහැල්ලු කිරීමට','නියුට්‍රල් ගියර් පෙට්ටියට හානි කරන නිසා'],'බෑවුමකින් පහළට නියුට්‍රල් එකේ ලිස්සා නොයන්න.'],
-['tech','ටයර් ගෙවීම් දර්ශක (tread wear indicators) පිහිටා ඇත්තේ කොපමණ ගැඹුරකද?',['මි.මී. 1.6 පමණ','මි.මී. 5','මි.මී. 0.5','මි.මී. 10'],'Tread එම දර්ශක මට්ටමට ගෙවුණු විට ටයර මාරු කරන්න. 1.6 mm ට අඩු වූ විට ජල මත ලිස්සීම (aquaplaning) අවදානම වැඩිය.'],
-['tech','තිරිංග පැඩලය මෘදු වී යටට ගිලී යයි. හේතුව සහ කළ යුත්තේ?',['තිරිංග තෙල් කාන්දුවක් හෝ නළවල වාතය – රිය නොපදවන්න','සාමාන්‍ය තත්ත්වයකි','ටයර් පීඩනය අඩුයි','ඉන්ධන අඩුයි'],'මෘදු/ගිලෙන පැඩලය – තිරිංග පද්ධතියේ දෝෂයක්. වාහනය පදවන්න එපා.'],
-['tech','එන්ජිම අධික ලෙස රත් වුවහොත් කළ යුත්තේ?',['නවතා සිසිල් වීමට ඉඩ දෙන්න; රත් වූ රේඩියේටර් පියන කිසිදා විවෘත නොකරන්න','රේඩියේටර් පියන වහාම විවෘත කරන්න','වේගය වැඩි කර සුළඟින් සිසිල් කරන්න','ශීතකරණ දියර ඉවත් කරන්න'],'හේතු: ශීතකරණ දියර අඩු වීම, පටිය කැඩීම, ජල පොම්පය හෝ රේඩියේටර් දෝෂ.'],
-['tech','තිරිංග යොදන විට වාහනය එක් පැත්තකට ඇදී යයි. බොහෝ විට හේතුව?',['එක් පැත්තක තිරිංග දුර්වල වීම හෝ ටයර් පීඩනය අසමාන වීම','ඉන්ධන අඩු වීම','බැටරිය දුර්වල වීම','එන්ජින් තෙල් වැඩි වීම'],'තිරිංග පරීක්ෂා කරන තුරු දිගටම නොපදවන්න.'],
-['tech','බැටරි ආරෝපණ (charging) ලාම්පුව දැල්වී පවතී. බොහෝ විට හේතුව?',['ඩයිනමෝ/ඕල්ටනේටර් පටිය ලිස්සීම හෝ කැඩීම','ටයර් පීඩනය අඩු වීම','තිරිංග තෙල් අඩු වීම','ඉන්ධන ටැංකිය හිස් වීම'],'අනවශ්‍ය විදුලි උපාංග නිවා පටිය පරීක්ෂා කරන්න.'],
-['tech','මැනුවල් වාහනයක ගියර මාරු කිරීම අපහසු වන්නේ නම් හේතුව?',['ක්ලච් එක නිසි ලෙස විසන්ධි නොවීම','ටයර් පීඩනය වැඩි වීම','හෙඩ්ලයිට් දෝෂ','තිරිංග තෙල් වැඩි වීම'],'ක්ලච් එක සීරුමාරු හෝ අලුත්වැඩියා කරන්න.'],
-['tech','ටයර් පීඩනය පරීක්ෂා කළ යුත්තේ කවදාද?',['ටයර් සීතල විට (දිගු ගමනකට පෙර)','දිගු ගමනකින් පසු රත් වූ විට','වැසි කාලයේ පමණි','කිසිදා අවශ්‍ය නැත'],'වාහන පුවරුවේ (placard) සඳහන් පීඩනය භාවිතා කරන්න – ටයරයේ ලියා ඇති උපරිම පීඩනය නොවේ.'],
-['tech','ඩිෆරන්ෂියල් (differential) එකේ කාර්යය කුමක්ද?',['වංගුවලදී ධාවන රෝදවලට විවිධ වේගවලින් කැරකීමට ඉඩ දීම','එන්ජිම සිසිල් කිරීම','තිරිංග බලය වැඩි කිරීම','බැටරිය ආරෝපණය කිරීම'],'වංගුවකදී පිටත රෝදය ඇතුළත රෝදයට වඩා දුරක් යයි.'],
-['tech','ඩෑෂ්බෝඩයේ රතු අනතුරු ලාම්පුවලට අයත් වන්නේ මොනවාද?',['එන්ජින් තෙල් පීඩනය, තිරිංග, එන්ජින් උෂ්ණත්වය, බැටරි ආරෝපණය','හයි බීම් සහ ඉන්ඩිකේටර්','ඉන්ධන අඩු වීම සහ ABS','රේඩියෝව සහ වායු සමීකරණය'],'රතු = වහාම නවතින්න · කහ = ඉක්මනින් පරීක්ෂා කරන්න · කොළ/නිල් = තොරතුරු පමණි.'],
-['tech','වයර් පිළිස්සෙන ගන්ධයක් දැනේ නම්?',['කෙටි පරිපථයක් – එන්ජිම නිවා බැටරිය විසන්ධි කරන්න','රේඩියෝව නිවා දිගටම යන්න','වින්ඩෝ විවෘත කර යන්න','හෙඩ්ලයිට් දමන්න'],'කෙටි පරිපථය ගින්නකට හේතු විය හැක.'],
-['tech','එන්ජින් තෙල් මට්ටම පරීක්ෂා කළ යුත්තේ කෙසේද?',['තල බිමක, එන්ජිම නිවා සිසිල් වූ පසු ඩිප්ස්ටික් එකෙන් MIN සහ MAX අතර දැයි බැලීම','එන්ජිම ක්‍රියාත්මක වන විට','බෑවුමක නවතා','ගමනක් ගිය සැණින්'],'තෙල් ලිහිසි කරයි, සිසිල් කරයි, පිරිසිදු කරයි.']
+['tech','රිය පදවන විට රතු එන්ජින් තෙල් පීඩන ලාම්පුව දැල්වේ. වහාම කළ යුත්තේ කුමක්ද?',['ආරක්ෂිතව මාර්ගයේ පසෙකට ගෙන නවතා එන්ජිම නිවා දමන්න','වේගයෙන් ළඟම ඇති ගරාජය වෙත ගමන් කරන්න','නියුට්‍රල් ගියරයට දමා වාහනය ඉදිරියට ගමන් කිරීමට හරින්න','ඇක්සිලරේටරය තද කරන්න'],'රතු අනතුරු ලාම්පු (තෙල්, තිරිංග, උෂ්ණත්වය, බැටරි) = වහාම නවතින්න. දිගටම ධාවනය කළහොත් එන්ජිමට බරපතළ හානි සිදු විය හැක.'],
+['tech','ටයරයේ මැද කොටස දාරවලට වඩා ඉක්මනින් ගෙවී යාමට හේතුව කුමක්ද?',['නිර්දේශිත ප්‍රමාණයට වඩා වාතය වැඩි වීම','නිර්දේශිත ප්‍රමාණයට වඩා වාතය අඩු වීම','රෝද සමබර නොවීම','තිරිංග හිර වී තිබීම'],'මැද ගෙවී යාම = වාතය වැඩි වීම · දෙදාර ගෙවී යාම = වාතය අඩු වීම · එක් දාරයක් ගෙවී යාම = රෝද පෙළගැස්මේ දෝෂය.'],
+['tech','ටයරයේ දෙපස දාර දෙකම ඉක්මනින් ගෙවී යාමට හේතුව කුමක්ද?',['වාතය අඩු වීම','වාතය වැඩි වීම','තිරිංග දුර්වල වීම','එන්ජින් තෙල් අඩු වීම'],'දෙදාර ගෙවී යාම – ටයරයේ වාතය අඩු වීමයි.'],
+['tech','ටයරයේ එක් දාරයක් පමණක් ගෙවී යාමට බොහෝ විට හේතුව කුමක්ද?',['රෝද පෙළගැස්ම (wheel alignment) වැරදි වීම','වාතය වැඩි වීම','ඉන්ධන අඩු වීම','බැටරිය දුර්වල වීම'],'එක් දාරයක් ගෙවී යාම – රෝද පෙළගැස්මේ (alignment) දෝෂයකි.'],
+['tech','රිය පදවන විට කහ ABS ලාම්පුව දැල්වී පවතී. එයින් අදහස් වන්නේ කුමක්ද?',['සාමාන්‍ය තිරිංග ක්‍රියා කරයි, නමුත් ABS පද්ධතිය ක්‍රියා නොකරයි – තදින් තිරිංග යෙදීමේදී රෝද හිර (ලොක්) විය හැක','පාද තිරිංග ක්‍රියා නොකරයි','අත් තිරිංගය (handbrake) ස්වයංක්‍රීයව යෙදී ඇත','තිරිංග තෙල් සම්පූර්ණයෙන් හිස් වී ඇත'],'කහ අනතුරු ලාම්පු = ඉක්මනින් පරීක්ෂා කරවා ගන්න.'],
+['tech','කඳු බෑවුමකින් පහළට යාමට පෙර අඩු ගියරයක් තෝරා ගන්නේ ඇයි?',['එන්ජින් තිරිංග භාවිත කර තිරිංග අධික ලෙස රත් වීම (brake fade) වැළැක්වීමට','ඉන්ධන ඉතිරි කිරීමට','සුක්කානම සැහැල්ලු කිරීමට','නියුට්‍රල් ගියරය නිසා ගියර් පෙට්ටියට හානි වන බැවින්'],'බෑවුමකින් පහළට යාමේදී නියුට්‍රල් ගියරයෙන් ධාවනය නොකරන්න.'],
+['tech','ටයර් ගෙවීම් දර්ශක (tread wear indicators) පිහිටා ඇත්තේ කොපමණ ගැඹුරකද?',['මි.මී. 1.6 පමණ','මි.මී. 5','මි.මී. 0.5','මි.මී. 10'],'ටයරයේ කට්ට (tread) එම දර්ශක මට්ටමට ගෙවුණු විට ටයර මාරු කරන්න. 1.6 mm ට වඩා අඩු වූ විට ජලය මත ලිස්සා යාමේ (aquaplaning) අවදානම වැඩිය.'],
+['tech','තිරිංග පැඩලය මෘදු වී යටට ගිලී යයි. ඊට හේතුව සහ කළ යුත්තේ කුමක්ද?',['තිරිංග තෙල් කාන්දුවක් හෝ නළවල වාතය පිරීම – වාහනය නොපදවන්න','සාමාන්‍ය තත්ත්වයකි','ටයර් පීඩනය අඩු වීම','ඉන්ධන ප්‍රමාණය අඩු වීම'],'මෘදු වී යටට ගිලෙන පැඩලය – තිරිංග පද්ධතියේ දෝෂයකි. වාහනය ධාවනය නොකරන්න.'],
+['tech','එන්ජිම අධික ලෙස රත් වුවහොත් කළ යුත්තේ කුමක්ද?',['වාහනය නවතා සිසිල් වීමට ඉඩ හරින්න; රත් වූ රේඩියේටර් පියන කිසි විටෙකත් විවෘත නොකරන්න','රේඩියේටර් පියන වහාම විවෘත කරන්න','වේගය වැඩි කර සුළඟින් එන්ජිම සිසිල් කරන්න','සිසිලන දියර ඉවත් කරන්න'],'හේතු: සිසිලන දියර අඩු වීම, පටිය කැඩීම, ජල පොම්පයේ හෝ රේඩියේටරයේ දෝෂ.'],
+['tech','තිරිංග යොදන විට වාහනය එක් පසකට ඇදී යයි. ඊට බොහෝ විට හේතුව කුමක්ද?',['එක් පසක තිරිංග දුර්වල වීම හෝ ටයර් පීඩනය අසමාන වීම','ඉන්ධන අඩු වීම','බැටරිය දුර්වල වීම','එන්ජින් තෙල් වැඩි වීම'],'තිරිංග පද්ධතිය පරීක්ෂා කර ගන්නා තුරු දිගටම ධාවනය නොකරන්න.'],
+['tech','බැටරි ආරෝපණ (charging) ලාම්පුව දැල්වී පවතී. ඊට බොහෝ විට හේතුව කුමක්ද?',['ඩයිනමෝ/ඕල්ටනේටර් පටිය ලිස්සීම හෝ කැඩී යාම','ටයර් පීඩනය අඩු වීම','තිරිංග තෙල් අඩු වීම','ඉන්ධන ටැංකිය හිස් වීම'],'අනවශ්‍ය විදුලි උපාංග නිවා පටිය පරීක්ෂා කරන්න.'],
+['tech','මැනුවල් වාහනයක ගියර් මාරු කිරීම අපහසු වන්නේ නම් ඊට හේතුව කුමක්ද?',['ක්ලච් පද්ධතිය නිසි ලෙස විසන්ධි නොවීම','ටයර් පීඩනය වැඩි වීම','ප්‍රධාන ලාම්පු (හෙඩ්ලයිට්) දෝෂ','තිරිංග තෙල් වැඩි වීම'],'ක්ලච් පද්ධතිය සීරුමාරු කරවා ගන්න හෝ අලුත්වැඩියා කරන්න.'],
+['tech','ටයර් පීඩනය පරීක්ෂා කළ යුත්තේ කවදාද?',['ටයර් සිසිල්ව පවතින විට (දිගු ගමනකට පෙර)','දිගු ගමනකින් පසු රත් වූ විට','වැසි කාලයේදී පමණි','කිසි විටෙකත් අවශ්‍ය නොවේ'],'වාහනයේ පුවරුවේ (placard) සඳහන් පීඩනය භාවිත කරන්න – ටයරයේ සඳහන් කර ඇති උපරිම පීඩනය නොවේ.'],
+['tech','ඩිෆරන්ෂියල් (differential) උපාංගයේ කාර්යය කුමක්ද?',['වංගු ගැනීමේදී ධාවන රෝදවලට වෙනස් වේගවලින් කැරකීමට ඉඩ සැලසීම','එන්ජිම සිසිල් කිරීම','තිරිංග බලය වැඩි කිරීම','බැටරිය ආරෝපණය කිරීම'],'වංගුවකදී පිටත රෝදය ඇතුළත රෝදයට වඩා වැඩි දුරක් ගමන් කරයි.'],
+['tech','ඩෑෂ්බෝඩයේ රතු අනතුරු ලාම්පුවලට අයත් වන්නේ මොනවාද?',['එන්ජින් තෙල් පීඩනය, තිරිංග, එන්ජින් උෂ්ණත්වය, බැටරි ආරෝපණය','ඉහළ ආලෝක ධාරාව (හයි බීම්) සහ ඉන්ඩිකේටර්','ඉන්ධන අඩු වීම සහ ABS','රේඩියෝව සහ වායු සමීකරණය'],'රතු = වහාම නවතින්න · කහ = ඉක්මනින් පරීක්ෂා කරන්න · කොළ/නිල් = තොරතුරු පමණි.'],
+['tech','වයර් පිළිස්සෙන ගන්ධයක් දැනේ නම් කළ යුත්තේ කුමක්ද?',['කෙටි පරිපථයක් – එන්ජිම නිවා බැටරිය විසන්ධි කරන්න','රේඩියෝව නිවා දමා දිගටම ගමන් කරන්න','වීදුරු විවෘත කර ගමන් කරන්න','ප්‍රධාන ලාම්පු (හෙඩ්ලයිට්) දල්වන්න'],'කෙටි පරිපථයක් ගින්නක් ඇති වීමට හේතු විය හැක.'],
+['tech','එන්ජින් තෙල් මට්ටම පරීක්ෂා කළ යුත්තේ කෙසේද?',['සමතලා බිමක, එන්ජිම නිවා සිසිල් වූ පසු මට්ටම් දණ්ඩෙන් (ඩිප්ස්ටික්) MIN සහ MAX අතර පවතීදැයි බැලීම','එන්ජිම ක්‍රියාත්මක වන විට','බෑවුමක වාහනය නවතා','ගමනක් අවසන් කළ සැණින්'],'එන්ජින් තෙල් මගින් එන්ජිම ලිහිසි කිරීම, සිසිල් කිරීම සහ පිරිසිදු කිරීම සිදු කරයි.']
 ];
-const SECN={book:'DMT ප්‍රශ්න පොත',sign:'සංඥා',mark:'මාර්ග සලකුණු',rule:'මාර්ග නීති',tech:'තාක්ෂණික'};
+const SECN0={book:'DMT ප්‍රශ්න පොත',sign:'සංඥා',mark:'මාර්ග සලකුණු',rule:'මාර්ග නීති',tech:'තාක්ෂණික දැනුම'};
 
 // ================= QUESTION BUILDERS =================
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const pick=(a,n)=>shuffle(a).slice(0,n);
 function signQ(idx,allowReverse=true){
-  const s=SG[idx];const pool=SG.map((x,i)=>i).filter(i=>i!==idx&&SG[i].gr===s.gr);
+  const s0=SG[idx];const s=EN?Object.assign({},s0,{si:s0.en.replace(/\s*\([A-Z]+-\d+\)|\s*\(IS-\w+\)/,'')}):s0;const pool=SG.map((x,i)=>i).filter(i=>i!==idx&&SG[i].gr===s.gr);
   const others=pick(pool.length>=3?pool:SG.map((x,i)=>i).filter(i=>i!==idx),3);
   const sec=s.gr==='mark'?'mark':'sign';
   if(allowReverse&&Math.random()<0.3&&s.gr!=='light'){
-    return {key:'s'+idx,sec,t:`«${s.si}» යන අර්ථය ඇති ${s.gr==='mark'?'සලකුණ':'සංඥාව'} තෝරන්න.`,grid:true,
-      o:shuffle([{h:s.svg,c:1},...others.map(i=>({h:SG[i].svg,c:0}))]),e:`නිවැරදි පිළිතුර: ${s.si} (${s.en}).`};
+    return {key:'s'+idx,sec,t:EN?`Choose the ${s.gr==='mark'?'marking':'sign'} that means «${s.si}».`:`«${s.si}» යන අර්ථය ඇති ${s.gr==='mark'?'සලකුණ':'සංඥාව'} තෝරන්න.`,grid:true,
+      o:shuffle([{h:s.svg,c:1},...others.map(i=>({h:SG[i].svg,c:0}))]),e:EN?`Correct answer: ${s.si}.`:`නිවැරදි පිළිතුර: ${s.si} (${s.en}).`};
   }
-  const qt=s.gr==='mark'?'මෙම මාර්ග සලකුණෙන් අදහස් වන්නේ කුමක්ද? (රතු කාරය = ඔබ)':s.gr==='light'?'මෙම සංඥා ලාම්පුවෙන් අදහස් වන්නේ කුමක්ද?':'මෙම සංඥාවෙන් අදහස් වන්නේ කුමක්ද?';
-  return {key:'s'+idx,sec,t:qt,img:s.svg,o:shuffle([{h:s.si,c:1},...others.map(i=>({h:SG[i].si,c:0}))]),e:`${GROUPS[s.gr][0]}: ${s.si} (${s.en}). ${GROUPS[s.gr][1]}`};
+  const qt=s.gr==='mark'?'මෙම මාර්ග සලකුණෙන් අදහස් වන්නේ කුමක්ද? (රතු මෝටර් රථය = ඔබ)':s.gr==='light'?'මෙම ආලෝක සංඥාවෙන් අදහස් වන්නේ කුමක්ද?':'මෙම මාර්ග සංඥාවෙන් දැක්වෙන්නේ කුමක්ද?';
+  return {key:'s'+idx,sec,t:qt,img:s.svg,o:shuffle([{h:s.si,c:1},...others.map(i=>({h:EN?SG[i].en.replace(/\s*\([A-Z]+-\d+\)|\s*\(IS-\w+\)/,''):SG[i].si,c:0}))]),e:EN?`${I18N_G[s.gr][0]}: ${s.si}. ${I18N_G[s.gr][1]}`:`${GROUPS[s.gr][0]}: ${s.si} (${s.en}). ${GROUPS[s.gr][1]}`};
 }
-const bq=b=>({key:'b'+b.n,sec:'book',num:b.n,t:`<span class="pill">පොතේ අංක ${b.n}</span> ${b.t}`,img:b.img?`<img src="book/${b.img}" alt="">`:null,o:shuffle(b.o.map((h,i)=>({h,c:i+1===b.a?1:0}))),e:`පොතේ නිවැරදි පිළිතුර: <b>${b.o[b.a-1]}</b>`+(b.note?`<br>⚠️ ${b.note}`:'')});
+const bq=b=>{const L=EN&&b.en?b.en:b;return {key:'b'+b.n,sec:'book',num:b.n,t:`<span class="pill">${EN?'Book No.':'පොතේ අංක'} ${b.n}</span> ${L.t}`,img:b.img?`<img src="book/${b.img}" alt="">`:null,o:shuffle(L.o.map((h,i)=>({h,c:i+1===b.a?1:0,idx:i}))),e:`${EN?'Correct answer (book)':'පොතේ නිවැරදි පිළිතුර'}: <b>${L.o[b.a-1]}</b>`+(L.note?`<br>⚠️ ${L.note}`:'')};};
 WQ.forEach((w,i)=>w.key='w'+i);
 const wq=w=>({key:w.key,sec:w[0],t:w[1],o:shuffle(w[2].map((h,i)=>({h,c:i===0?1:0}))),e:w[3]});
 
 // signature of a question's correct answer, used to block near-identical repeats
+const SECN=EN?{book:'DMT question book',sign:'Signs',mark:'Road markings',rule:'Road rules',tech:'Technical'}:SECN0;
 const sig=q=>{const c=q.o.find(o=>o.c);if(!c||/<svg|<img/.test(c.h))return null;return 'a:'+c.h.replace(/<[^>]+>/g,'').replace(/[\s.,«»"'()\-–]/g,'').slice(0,22);};
 function makeExam(){
   const signIdx=SG.map((s,i)=>i).filter(i=>SG[i].gr!=='mark');
@@ -544,14 +562,14 @@ function makeExam(){
 const FB=window.FEEDBACK||{};
 const fbUrl=ref=>FB.form?FB.form+(FB.questionField&&ref?`?usp=pp_url&${FB.questionField}=${encodeURIComponent(ref)}`:''):'';
 const qRef=q=>q.key&&q.key[0]==='b'?`DMT පොත – ප්‍රශ්න අංක ${q.key.slice(1)}`:`${q.key||''} – ${String(q.t).replace(/<[^>]+>/g,'').slice(0,60)}`;
-const repLink=q=>FB.form?`<br><a class="rep" href="${fbUrl(qRef(q))}" target="_blank" rel="noopener">⚑ මෙම ප්‍රශ්නයේ වැරැද්දක්? වාර්තා කරන්න</a>`:'';
+const repLink=q=>FB.form?`<br><a class="rep" href="${fbUrl(qRef(q))}" target="_blank" rel="noopener">⚑ මෙම ප්‍රශ්නයේ දෝෂයක් තිබේද? වාර්තා කරන්න</a>`:'';
 // ================= RENDER ENGINE =================
-function renderQs(container,qs,st){
+function renderQs(container,qs,st){setTimeout(()=>trAll(container),0);
   container.innerHTML='';
   qs.forEach((q,n)=>{
     const d=document.createElement('div');d.className='q';d.id=container.id+'-q'+n;
     d.innerHTML=`<div class="qh"><span>ප්‍රශ්නය ${n+1}${st.wrongTab&&WR[q.key]?` · වැරදුණු වාර ${WR[q.key].c}`:''}</span><span>${SECN[q.sec]}</span></div><div class="qt">${q.t}</div>${q.img?`<div class="sign">${q.img}</div>`:''}<div class="${q.grid?'grid4':''}">`+
-      q.o.map((o,j)=>`<button class="opt" data-j="${j}">${q.grid?'':['අ','ආ','ඇ','ඈ'][j]+'. '}${o.h}</button>`).join('')+`</div><div class="exp"><b>පැහැදිලි කිරීම:</b> ${q.e}${repLink(q)}</div>`;
+      q.o.map((o,j)=>`<button class="opt" data-j="${j}">${q.grid?'':(EN?['A','B','C','D']:['අ','ආ','ඇ','ඈ'])[j]+'. '}${o.h}</button>`).join('')+`</div><div class="exp"><b>පැහැදිලි කිරීම:</b> ${q.e}${repLink(q)}</div>`;
     d.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(st,n,+b.dataset.j));
     container.appendChild(d);
   });
@@ -562,11 +580,11 @@ function choose(st,n,j){
   st.ans[n]=j;
   const d=document.getElementById(st.el.id+'-q'+n);
   d.querySelectorAll('.opt').forEach((b,k)=>b.classList.toggle('sel',k===j));
-  if(st.saveProg){PG[st.qs[n].key]=st.qs[n].o[j].h;savePG();}
+  if(st.saveProg){const oo=st.qs[n].o[j];PG[st.qs[n].key]=oo.idx!==undefined?'#'+oo.idx:oo.h;savePG();}
   if(st.mode==='prac'){reveal(st,n);
     const q=st.qs[n];
     if(!isOk(st,n))addWrong(q);
-    else if(st.wrongTab&&WR[q.key]){delWrong(q.key);const d2=document.getElementById(st.el.id+'-q'+n);d2.querySelector('.exp').insertAdjacentHTML('afterbegin','<b style="color:var(--ok)">✓ නිවැරදියි – වැරදුණු ලැයිස්තුවෙන් ඉවත් කළා.</b><br>');}
+    else if(st.wrongTab&&WR[q.key]){delWrong(q.key);const d2=document.getElementById(st.el.id+'-q'+n);d2.querySelector('.exp').insertAdjacentHTML('afterbegin','<b style="color:var(--ok)">✓ නිවැරදියි – වැරදුණු ප්‍රශ්න ලැයිස්තුවෙන් ඉවත් කරන ලදී.</b><br>');}
   }
   st.onchange&&st.onchange();
 }
@@ -587,7 +605,7 @@ function updWrongBadge(){const b=document.querySelector('button[data-t=wrong]');
 function qByKey(k){const t=k[0],v=+k.slice(1);
   if(t==='b'){const b=BOOK.find(x=>x.n===v);return b?bq(b):null;}
   if(t==='s')return SG[v]?signQ(v,false):null;
-  if(t==='w')return WQ[v]?wq(WQ[v]):null;return null;}
+  if(t==='w')return (!EN&&WQ[v])?wq(WQ[v]):null;return null;}
 
 // --- exam tab
 const $=id=>document.getElementById(id);
@@ -605,7 +623,7 @@ function submit(){
   let score=0;const by={};
   EX.qs.forEach((q,n)=>{by[q.sec]=by[q.sec]||[0,0];by[q.sec][1]++;if(isOk(EX,n)){score++;by[q.sec][0]++;}else addWrong(q);reveal(EX,n);});
   const wrong=EX.qs.map((q,n)=>n).filter(n=>!isOk(EX,n)).map(n=>`<a href="#paper-q${n}">${n+1}</a>`).join(' · ');
-  $('result').innerHTML=`<div class="res"><div class="big">${score}/40</div><div>${score===40?'සම්පූර්ණ ලකුණු! ඔබ විභාගයට සූදානම්. 🎯':score>=30?'සමත් (අවම 30). වැරදුණු ප්‍රශ්න බලා නැවත 40 සඳහා උත්සාහ කරන්න.':'සමත් ලකුණු 30ට අඩුයි – කෙටි සටහන් සහ සංඥා කියවා නැවත උත්සාහ කරන්න.'}</div>
+  $('result').innerHTML=`<div class="res"><div class="big">${score}/40</div><div>${score===40?'සම්පූර්ණ ලකුණු! ඔබ විභාගයට සූදානම්. 🎯':score>=30?'සමත් (අවම ලකුණු 30). වැරදුණු ප්‍රශ්න පරීක්ෂා කර නැවත ලකුණු 40 සඳහා උත්සාහ කරන්න.':'සමත් වීමට අවශ්‍ය ලකුණු 30ට වඩා අඩුය – කෙටි සටහන් සහ සංඥා කියවා නැවත උත්සාහ කරන්න.'}</div>
   <table style="margin-top:10px">${Object.entries(by).map(([k,v])=>`<tr><td>${SECN[k]}</td><td>${v[0]}/${v[1]}</td></tr>`).join('')}</table>
   ${wrong?`<p style="font-size:14px">වැරදුණු ප්‍රශ්න: ${wrong}</p>`:''}</div>`;
   window.scrollTo(0,0);
@@ -619,8 +637,8 @@ $('submit').onclick=submit;$('reset').onclick=newExam;
   const L=$('lib');let html='';
   Object.keys(GROUPS).forEach(gk=>{
     const items=SG.filter(s=>s.gr===gk);
-    html+=`<h2>${GROUPS[gk][0]} (${items.length})</h2><p class="gdesc">${GROUPS[gk][1]}</p><div class="lib">`+
-      items.map(s=>`<div class="card">${s.svg}<div class="si">${s.si}</div><div class="en">${s.en}</div></div>`).join('')+`</div>`;
+    const G=EN?I18N_G[gk]:GROUPS[gk];html+=`<h2>${G[0]} (${items.length})</h2><p class="gdesc">${G[1]}</p><div class="lib">`+
+      items.map(s=>EN?`<div class="card">${s.svg}<div class="si">${s.en}</div><div class="en">${s.si}</div></div>`:`<div class="card">${s.svg}<div class="si">${s.si}</div><div class="en">${s.en}</div></div>`).join('')+`</div>`;
   });
   L.innerHTML=html;$('libCount').textContent=`සංඥා/සලකුණු ${SG.length}`;
   L.querySelectorAll('.card').forEach(c=>c.onclick=()=>c.classList.toggle('rev'));
@@ -630,18 +648,18 @@ $('submit').onclick=submit;$('reset').onclick=newExam;
 // --- bank tab (practice everything)
 let BK={el:$('bank'),mode:'prac',qs:[],ans:{},done:false,saveProg:true};
 const secSel=$('bankSec');
-[['book',`DMT ප්‍රශ්න පොත (${BOOK.length})`],['sign','අමතර: සංඥා හඳුනා ගැනීම'],['mark','අමතර: මාර්ග සලකුණු'],['rule','අමතර: මාර්ග නීති'],['tech','අමතර: තාක්ෂණික'],['all','සියල්ල (පොත + අමතර)']].forEach(([v,t])=>secSel.insertAdjacentHTML('beforeend',`<option value="${v}">${t}</option>`));
+[['book',`DMT ප්‍රශ්න පොත (${BOOK.length})`],['sign','අමතර: සංඥා හඳුනා ගැනීම'],['mark','අමතර: මාර්ග සලකුණු'],['rule','අමතර: මාර්ග නීති'],['tech','අමතර: තාක්ෂණික දැනුම දැනුම'],['all','සියල්ල (පොත + අමතර)']].filter(([v])=>!EN||v==='book'||v==='sign'||v==='mark').forEach(([v,t])=>secSel.insertAdjacentHTML('beforeend',`<option value="${v}">${t}</option>`));
 function buildBank(shuf){
   const f=secSel.value;
-  let qs=[...BOOK.map(bq),...SG.map((s,i)=>signQ(i,false)),...WQ.map(wq)];
+  let qs=[...BOOK.map(bq),...SG.map((s,i)=>signQ(i,false)),...(EN?[]:WQ.map(wq))];
   if(f!=='all')qs=qs.filter(q=>q.sec===f);
   BK.qs=(f==='book'&&!shuf)?qs.sort((a,b)=>a.num-b.num):shuffle(qs);BK.ans={};
   BK.onchange=()=>{const a=Object.keys(BK.ans).length,ok=BK.qs.filter((q,n)=>isOk(BK,n)).length;$('bankProg').textContent=`${a}/${BK.qs.length} · නිවැරදි ${ok}`;};
   renderQs(BK.el,BK.qs,BK);
-  BK.qs.forEach((q,n)=>{const h=PG[q.key];if(h===undefined)return;const j=q.o.findIndex(o=>o.h===h);if(j<0)return;BK.ans[n]=j;reveal(BK,n);});
+  BK.qs.forEach((q,n)=>{const h=PG[q.key];if(h===undefined)return;const j=String(h)[0]==='#'?q.o.findIndex(o=>o.idx===+String(h).slice(1)):q.o.findIndex(o=>o.h===h);if(j<0)return;BK.ans[n]=j;reveal(BK,n);});
   BK.onchange();
 }
-let pclr=0;$('bankReset').onclick=()=>{if(!pclr){pclr=1;$('bankReset').textContent='තහවුරු කරන්න?';setTimeout(()=>{pclr=0;$('bankReset').textContent='ප්‍රගතිය මකන්න';},4000);return;}pclr=0;PG={};savePG();$('bankReset').textContent='ප්‍රගතිය මකන්න';buildBank(false);};
+let pclr=0;$('bankReset').onclick=()=>{if(!pclr){pclr=1;$('bankReset').textContent='තහවුරු කරන්නද?';setTimeout(()=>{pclr=0;$('bankReset').textContent='ප්‍රගතිය මකන්න';},4000);return;}pclr=0;PG={};savePG();$('bankReset').textContent='ප්‍රගතිය මකන්න';buildBank(false);};
 secSel.onchange=()=>buildBank(false);$('bankShuffle').onclick=()=>buildBank(true);
 
 // --- wrong-questions tab
@@ -649,10 +667,10 @@ let WT={el:$('wrongList'),mode:'prac',qs:[],ans:{},done:false,wrongTab:true};
 function buildWrong(shuf){
   const keys=Object.keys(WR).sort((a,b)=>WR[b].c-WR[a].c||WR[b].t-WR[a].t);
   const qs=[];const seen=new Set();
-  for(const k of keys){if(seen.has(k))continue;seen.add(k);const q=qByKey(k);if(q)qs.push(q);else delete WR[k];}
+  for(const k of keys){if(seen.has(k))continue;seen.add(k);const q=qByKey(k);if(q)qs.push(q);else if(!(EN&&k[0]==='w'))delete WR[k];}
   WT.qs=shuf?shuffle(qs):qs;WT.ans={};
   WT.onchange=()=>{const a=Object.keys(WT.ans).length,ok=WT.qs.filter((q,n)=>isOk(WT,n)).length;$('wrongProg').textContent=`${a}/${WT.qs.length} · නිවැරදි ${ok}`;};
-  if(!qs.length){$('wrongList').innerHTML='<div class="res">🎉 වැරදුණු ප්‍රශ්න නැත. ප්‍රශ්න පත්‍රයක් හෝ පුහුණුවක් කරන්න – වැරදෙන ප්‍රශ්න මෙහි එකතු වේ (එකම ප්‍රශ්නය එක් වරක් පමණි).</div>';$('wrongProg').textContent='0';return;}
+  if(!qs.length){$('wrongList').innerHTML='<div class="res">🎉 වැරදුණු ප්‍රශ්න නොමැත. ප්‍රශ්න පත්‍රයක් හෝ පුහුණුවක් සිදු කරන්න – වැරදෙන ප්‍රශ්න මෙහි එකතු වේ (එකම ප්‍රශ්නය එක් වරක් පමණි)..</div>';$('wrongProg').textContent='0';return;}
   renderQs(WT.el,WT.qs,WT);WT.onchange();
 }
 $('wrongShuffle').onclick=()=>buildWrong(true);
@@ -671,6 +689,10 @@ $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   window.scrollTo(0,0);
 });
 newExam();
+document.documentElement.lang=EN?'en':'si';
+$('lang'+(EN?'En':'Si')).classList.add('primary');
+if(EN){$('enWarn').style.display='block';document.title='DMT Driving Licence Written Exam – Practice (English, unofficial)';trAll(document.body);
+  new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>n.nodeType===3?trNode(n):n.nodeType===1&&trAll(n));if(m.type==='characterData')trNode(m.target);})).observe(document.body,{childList:true,subtree:true,characterData:true});}
 </script>
 </body>
 </html>
