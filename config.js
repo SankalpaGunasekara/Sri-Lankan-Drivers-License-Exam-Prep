@@ -1,9 +1,5 @@
-// ===== Feedback settings (Google Form) =====
-// 1. Create a Google Form (see README.md).
-// 2. Paste the form's link below (the one ending in /viewform).
-// 3. Paste the "entry.XXXXXXX" id of the "Question" field so the question number fills in automatically.
-// Leave form empty to hide all feedback buttons.
+// Feedback settings (Google Form)
 window.FEEDBACK = {
-  form: "",          // e.g. "https://docs.google.com/forms/d/e/1FAIpQLS.../viewform"
-  questionField: ""  // e.g. "entry.123456789"
+  form: "https://docs.google.com/forms/d/e/1FAIpQLSc9F31SC9S0xO9w0IwLZB7peHXWRvxVqvi6MhkFSaJo54Vtkw/viewform",
+  questionField: "entry.1806942652"
 };
